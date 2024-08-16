@@ -1,4 +1,4 @@
-import  RcMenu  from "./components/menu/RcMenu";
+import  SideBar  from "./components/menu/SideBar";
 import DataTable from "./components/table/Table";
 import "./App.css";
 
@@ -7,7 +7,7 @@ export default function App() {
     <div className="App">
       <div className="layout">
         <div className="sidebar">
-          <RcMenu />
+          <SideBar />
         </div>
         <div className="content">
           <DataTable />

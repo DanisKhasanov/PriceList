@@ -1,134 +1,108 @@
+import { useMemo } from "react";
 import React from "react";
-import {
-  MRT_GlobalFilterTextField,
-  MRT_TableBodyCellValue,
-  MRT_TablePagination,
-  MRT_ToolbarAlertBanner,
-  flexRender,
-  type MRT_ColumnDef,
-  useMaterialReactTable,
-} from "material-react-table";
-import {
-  Box,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material";
 import { dates } from "../data/data";
 
 const columns: MRT_ColumnDef<(typeof dates)[0]>[] = [
   {
     header: "Name",
     accessorKey: "name",
+    size: 150,
   },
   {
     header: "Code",
     accessorKey: "code",
+    size: 70,
   },
   {
     header: "Article",
     accessorKey: "article",
+    size: 70,
   },
   {
     header: "Quantity",
     accessorKey: "quantity",
+    size: 70,
   },
   {
     header: "Price",
     accessorKey: "vip",
     Cell: ({ cell }) => `${cell.getValue()} руб.`,
+    size: 50,
   },
   {
     header: "VIP10",
     accessorKey: "vip10",
-    Cell: ({ cell }) => `${cell.getValue()} ₽`,
+    Cell: ({ cell }) => `${cell.getValue()} руб.`,
+    size: 50,
   },
   {
     header: "VIP25",
     accessorKey: "vip25",
-    Cell: ({ cell }) => `${cell.getValue()} ₽`,
+    Cell: ({ cell }) => `${cell.getValue()} руб.`,
+    size: 50,
   },
   {
     header: "VIP50",
     accessorKey: "vip50",
-    Cell: ({ cell }) => `$${cell.getValue()}`,
+    Cell: ({ cell }) => `${cell.getValue()} руб.`,
+    size: 50,
   },
   {
     header: "VIP75",
     accessorKey: "vip75",
-    Cell: ({ cell }) => `$${cell.getValue()}`,
+    Cell: ({ cell }) => `${cell.getValue()} руб.`,
+    size: 50,
   },
 ];
 
 const DataTable = () => {
-  const table = useMaterialReactTable({
-    columns,
-    data: dates,
-    enableRowSelection: true,
-    initialState: {
-      pagination: { pageSize: 5, pageIndex: 0 },
-      showGlobalFilter: true,
-    },
-    muiPaginationProps: {
-      rowsPerPageOptions: [5, 10, 15],
-      variant: "outlined",
-    },
-    paginationDisplayMode: "pages",
-  });
+  const globalTheme = useTheme();
+  const tableTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: globalTheme.palette.mode,
+          primary: {
+            main: "#1976d2",
+          },
+          background: {
+            default: "#ffffff",
+          },
+        },
+        components: {
+          MuiTableCell: {
+            styleOverrides: {
+              head: {
+                color: "black",
+                fontSize: "1.1rem",
+              },
+            },
+          },
+     
+        },
+      }),
+    [globalTheme]
+  );
 
   return (
-    <Stack>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+    <ThemeProvider theme={tableTheme}>
+      <MaterialReactTable
+        columns={columns}
+        data={dates}
+        enableRowSelection
+        enableHiding={false}
+        enableDensityToggle={false}
+        initialState={{
+          density: "compact",
+          pagination: { pageSize: 15, pageIndex: 0 },
         }}
-      >
-        <MRT_GlobalFilterTextField table={table} sx={{ width: 600, marginLeft: 2 }} />
-        <MRT_TablePagination table={table} />
-      </Box>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableCell align="center" variant="head" key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {table.getRowModel().rows.map((row, rowIndex) => (
-              <TableRow key={row.id} selected={row.getIsSelected()}>
-                {row.getVisibleCells().map((cell, _columnIndex) => (
-                  <TableCell align="center" variant="body" key={cell.id}>
-                    <MRT_TableBodyCellValue
-                      cell={cell}
-                      table={table}
-                      staticRowIndex={rowIndex}
-                    />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <MRT_ToolbarAlertBanner stackAlertBanner table={table} />
-    </Stack>
+        paginationDisplayMode='pages'
+        enableColumnActions={false}
+        layoutMode={"grid"}
+      />
+    </ThemeProvider>
   );
 };
 
