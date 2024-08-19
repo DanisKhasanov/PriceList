@@ -34,7 +34,7 @@
 .menu-title {
   font-size: 20px;
   color: #404043;
-  margin: 10px ;
+  margin: 10px;
   font-weight: bold;
 }
 .sidebar-menu {
@@ -61,7 +61,7 @@
   width: 400px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 20px 0px 20px 0px; 
+  padding: 20px 0px 20px 0px;
   margin: 15px 5px 5px 5px;
 }
 
@@ -88,4 +88,17 @@
   border: 1px solid #ccc;
   padding: 3.75px;
   font-size: 13px;
+}
+
+.menu-button {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttonSelect {
+  margin-left: 30px;
+  width: 150px;
+  height: 35px;
+  border-radius: 10px;
 }

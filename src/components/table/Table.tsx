@@ -80,7 +80,6 @@ const DataTable = () => {
               },
             },
           },
-     
         },
       }),
     [globalTheme]
@@ -96,11 +95,17 @@ const DataTable = () => {
         enableDensityToggle={false}
         initialState={{
           density: "compact",
-          pagination: { pageSize: 15, pageIndex: 0 },
+          pagination: { pageSize: 20, pageIndex: 0 },
         }}
-        paginationDisplayMode='pages'
+        paginationDisplayMode="pages"
         enableColumnActions={false}
         layoutMode={"grid"}
+        enableStickyFooter={false}
+        muiTableContainerProps={{
+          sx: {
+            height: "calc(100vh - 115px)",
+          },
+        }}
       />
     </ThemeProvider>
   );
