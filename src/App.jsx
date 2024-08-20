@@ -1,18 +1,15 @@
-import  SideBar  from "./components/menu/SideBar";
-import DataTable from "./components/table/Table";
+import HomePage from "./components/homePage/HomePage";
+import { Provider } from "react-redux";
+import store from "./store/store";
+
 import "./App.css";
 
 export default function App() {
   return (
-    <div className="App">
-      <div className="layout">
-        <div className="sidebar">
-          <SideBar />
-        </div>
-        <div className="content">
-          <DataTable />
-        </div>
+    <Provider store={store}>
+      <div className="App">
+        <HomePage />
       </div>
-    </div>
+    </Provider>
   );
 }

@@ -42,7 +42,7 @@
   width: 400px;
   border-radius: 10px;
   font-size: 16px;
-  height: 290px;
+  height: calc(100vh - 550px);
   overflow: auto;
   color: "#404043";
 }
