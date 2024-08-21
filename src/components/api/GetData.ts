@@ -63,27 +63,44 @@ export const GenerateExcel = async (data) => {
         headers: {
           "Content-Type": "application/json",
         },
-        responseType: "blob", 
+        responseType: "blob",
       }
     );
 
     if (response.status !== 200) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
-    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
 
-    const contentDisposition = response.headers['content-disposition'];
+    const contentDisposition = response.headers["content-disposition"];
     const filename = contentDisposition
-      ? contentDisposition.split("filename=")[1].replace(/"/g, '')
-      : 'download.xlsx'; 
+      ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+      : "download.xlsx";
 
     link.download = filename;
-    link.click(); 
+    link.click();
 
     window.URL.revokeObjectURL(link.href);
   } catch (error) {
     console.error("Ошибка при генерации Excel-файла:", error);
+  }
+};
+
+export const ExtractCode = async (payload: any) => {
+  try {
+    const response = await api.get("get_data?extract_code=" + payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
   }
 };

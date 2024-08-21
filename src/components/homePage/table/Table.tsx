@@ -122,9 +122,9 @@ const DataTable = ({ data, loading }) => {
     try {
       await GenerateExcel(allTableData);
     } catch (error) {
-      console.error("Ошибка при скачивании файла:", error);
+      console.error("Ошибка при скачивании файла:", error);
     } finally {
-      setDownloading(false); // Сбрасываем состояние загрузки
+      setDownloading(false);
     }
   };
 
@@ -140,87 +140,104 @@ const DataTable = ({ data, loading }) => {
 
   return (
     <ThemeProvider theme={tableTheme}>
-      <MaterialReactTable
-        columns={columns}
-        data={tableData}
-        enableStickyFooter={false}
-        enableColumnActions={false}
-        paginationDisplayMode="pages"
-        layoutMode={"grid"}
-        initialState={{
-          density: "compact",
-          pagination: { pageSize: 20, pageIndex: 0 },
-          showGlobalFilter: true,
-        }}
-        state={{ isLoading: loading }}
-        muiTableContainerProps={{
-          sx: {
-            height: "calc(100vh - 112px)",
-          },
-        }}
-        renderToolbarInternalActions={({ table }) => (
-          <Box>
-            <MRT_ToggleFiltersButton
-              sx={{
-                borderRadius: "3px",
-                border: "1px solid #ccc;",
-                height: "40px",
-                marginLeft: "5px",
-                ":hover": { border: "1px solid black", background: "white" },
-              }}
-              table={table}
-            />
-            <MRT_ToggleFullScreenButton
-              sx={{
-                borderRadius: "3px",
-                border: "1px solid #ccc;",
-                height: "40px",
-                marginLeft: "10px",
-                ":hover": { border: "1px solid black", background: "white" },
-              }}
-              table={table}
-            />
-            <Button
-              sx={{
-                color: "black",
-                marginLeft: "10px",
-                border: "1px solid #ccc;",
-                fontSize: "13px",
-                height: "40px",
-                ":hover": { border: "1px solid black", background: "white" },
-              }}
-              onClick={() => download(table)}
-              disabled={downloading}
-              startIcon={
-                downloading ? <CircularProgress size={20} /> : <GetAppIcon />
-              }
-            >
-              {downloading ? "Downloading..." : "Download"}
-            </Button>
-            <Button
-              sx={{
-                color: "black",
-                height: "40px",
-                marginLeft: "10px",
-                background: "#F08080",
-                border: "1px solid #ccc;",
-                fontSize: "13px",
-                ":hover": { border: "1px solid black", background: "red" },
-              }}
-              onClick={clearTable}
-            >
-              <HighlightOffSharpIcon />
-              Clear Table
-            </Button>
+      <Box sx={{ position: "relative", height: "100%" }}>
+        <MaterialReactTable
+          columns={columns}
+          data={tableData}
+          enableStickyFooter={false}
+          enableColumnActions={false}
+          paginationDisplayMode="pages"
+          layoutMode={"grid"}
+          initialState={{
+            density: "compact",
+            pagination: { pageSize: 20, pageIndex: 0 },
+            showGlobalFilter: true,
+          }}
+          state={{ isLoading: loading }}
+          muiTableContainerProps={{
+            sx: {
+              height: "calc(100vh - 114px)",
+            },
+          }}
+          renderToolbarInternalActions={({ table }) => (
+            <Box>
+              <MRT_ToggleFiltersButton
+                sx={{
+                  borderRadius: "3px",
+                  border: "1px solid #ccc;",
+                  height: "40px",
+                  marginLeft: "5px",
+                  ":hover": { border: "1px solid black", background: "white" },
+                }}
+                table={table}
+              />
+              <MRT_ToggleFullScreenButton
+                sx={{
+                  borderRadius: "3px",
+                  border: "1px solid #ccc;",
+                  height: "40px",
+                  marginLeft: "10px",
+                  ":hover": { border: "1px solid black", background: "white" },
+                }}
+                table={table}
+              />
+              <Button
+                sx={{
+                  color: "black",
+                  marginLeft: "10px",
+                  border: "1px solid #ccc;",
+                  fontSize: "13px",
+                  height: "40px",
+                  ":hover": { border: "1px solid black", background: "white" },
+                }}
+                onClick={() => download(table)}
+              >
+                <GetAppIcon />
+                Download
+              </Button>
+              <Button
+                sx={{
+                  color: "black",
+                  height: "40px",
+                  marginLeft: "10px",
+                  background: "#F08080",
+                  border: "1px solid #ccc;",
+                  fontSize: "13px",
+                  ":hover": { border: "1px solid black", background: "red" },
+                }}
+                onClick={clearTable}
+              >
+                <HighlightOffSharpIcon />
+                Clear Table
+              </Button>
+            </Box>
+          )}
+          muiTableBodyCellProps={() => ({
+            sx: {
+              whiteSpace: "normal",
+              wordWrap: "break-word",
+            },
+          })}
+        />
+        {downloading && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              zIndex: 1000,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress color="secondary" />
           </Box>
         )}
-        muiTableBodyCellProps={() => ({
-          sx: {
-            whiteSpace: "normal",
-            wordWrap: "break-word",
-          },
-        })}
-      />
+      </Box>
     </ThemeProvider>
   );
 };

@@ -18,6 +18,8 @@
 .content {
   flex: 1;
   overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
@@ -42,7 +44,7 @@
   width: 400px;
   border-radius: 10px;
   font-size: 16px;
-  height: calc(100vh - 550px);
+  height: calc(100% - 530px);
   overflow: auto;
   color: "#404043";
 }
@@ -117,4 +119,7 @@
 .buttonSelect.getData {
   background-color: #1ab248;
   color: white;
+  height: 50px;
+  width: calc(100% - 10px);
+  margin: 5px;
 }
