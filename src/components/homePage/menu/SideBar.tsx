@@ -3,7 +3,7 @@ import Menu, { SubMenu, Item as MenuItem } from "rc-menu";
 import "rc-menu/assets/index.css";
 import { SearchByArticle } from "../search/SearchByArticle";
 import { GetOrderData } from "../../api/GetData";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setPathName,
   removePathName,
@@ -97,9 +97,7 @@ const SideBar = ({ fetchTableData }) => {
       </div>
 
       <div className="menu-buttons">
-        <button className="buttonSelect" onClick={fetchTableData}>
-          Получить данные
-        </button>
+        <button className="buttonSelect">Выбрать все</button>
         <button className="buttonSelect" onClick={deselectAll}>
           Снять выбор
         </button>
@@ -108,6 +106,12 @@ const SideBar = ({ fetchTableData }) => {
       <p className="menu-title">Артикулы:</p>
       <div>
         <SearchByArticle />
+      </div>
+
+      <div>
+        <button className="buttonSelect getData" onClick={fetchTableData}>
+          Получить данные
+        </button>
       </div>
     </div>
   );

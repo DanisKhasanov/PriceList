@@ -54,31 +54,35 @@ export const PostDataForTable = async (payload: any) => {
   }
 };
 
-export const GenerateExcel = async (data: any) => {
+export const GenerateExcel = async (data) => {
   try {
-    const response = await api.post("generate_excel", {"products": data}, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      responseType: 'blob', // ожидаем бинарные данные
-    });
-
-    // Извлечение имени файла из заголовка Content-Disposition
-    const contentDisposition = response.headers['content-disposition'];
-    let filename = "output.xlsx"; // Имя файла по умолчанию
-    if (contentDisposition) {
-      const match = contentDisposition.match(/filename="?([^"]+)"?/);
-      if (match && match[1]) {
-        filename = match[1];
+    const response = await api.post(
+      "generate_excel",
+      { products: data },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        responseType: "blob", 
       }
-    }
+    );
 
-    // Создаем ссылку для скачивания файла
-    const blob = new Blob([response.data], { type: response.data.type });
+    if (response.status !== 200) {
+      throw new Error('Network response was not ok');
+    }
+    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
+
+    const contentDisposition = response.headers['content-disposition'];
+    const filename = contentDisposition
+      ? contentDisposition.split("filename=")[1].replace(/"/g, '')
+      : 'download.xlsx'; 
+
     link.download = filename;
-    link.click();
+    link.click(); 
+
+    window.URL.revokeObjectURL(link.href);
   } catch (error) {
     console.error("Ошибка при генерации Excel-файла:", error);
   }

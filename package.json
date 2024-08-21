@@ -25,7 +25,8 @@
     "rc-menu": "^9.14.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "react-spinners": "^0.14.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
