@@ -40,14 +40,32 @@ export const GetOrderData = async () => {
   }
 };
 
-export const PostDataForTable = async (payload: any) => {
+export const GetDataForTable = async (pathNames: string[], name: string[] , extract_code: string[] ) => {
   try {
-    const response = await api.get("get_data?path_name=" + payload, {
+    const params = new URLSearchParams();
+
+    const formattedExtractCode = extract_code
+      .flatMap(code => code.split(/[\s\n]+/)) 
+      .filter(code => code.trim() !== "")     
+      .join("|"); 
+    
+    if (pathNames.length > 0) {
+      params.append('path_name', pathNames.join("|"));
+    }
+    if (name.length > 0) {
+      params.append('name', name.join("|"));
+    }
+    if (formattedExtractCode) {
+      params.append('extract_code', formattedExtractCode);
+    }
+
+    const response = await api.get(`get_data?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return response.data;
+    const responseData = response.data;
+    return responseData.products || [];
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;
@@ -90,17 +108,3 @@ export const GenerateExcel = async (data) => {
   }
 };
 
-export const ExtractCode = async (payload: any) => {
-  try {
-    const response = await api.get("get_data?extract_code=" + payload, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
-    throw error;
-  }
-};

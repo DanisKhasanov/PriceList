@@ -12,8 +12,8 @@ import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import { GenerateExcel } from "../../api/GetData";
 
-const DataTable = ({ data, loading }) => {
-  const [tableData, setTableData] = useState(data.products || []);
+const DataTable = ({ data,setTableData ,loading ,}) => {
+  // const [tableData, setTableData] = useState(data.products || []);
   const [downloading, setDownloading] = useState(false);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
@@ -44,7 +44,7 @@ const DataTable = ({ data, loading }) => {
 
   const columns: MRT_ColumnDef<any>[] = [
     {
-      header: "Delete",
+      header: "",
       id: "actions",
       Cell: ({ row }) => (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -108,8 +108,8 @@ const DataTable = ({ data, loading }) => {
   ];
 
   useEffect(() => {
-    if (data?.products) {
-      setTableData(data.products);
+    if (data) {
+      setTableData(data);
     }
   }, [data]);
 
@@ -143,7 +143,7 @@ const DataTable = ({ data, loading }) => {
       <Box sx={{ position: "relative", height: "100%" }}>
         <MaterialReactTable
           columns={columns}
-          data={tableData}
+          data={data}
           enableStickyFooter={false}
           enableColumnActions={false}
           paginationDisplayMode="pages"
