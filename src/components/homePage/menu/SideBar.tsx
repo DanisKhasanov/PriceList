@@ -3,7 +3,7 @@ import Menu, { SubMenu, Item as MenuItem } from "rc-menu";
 import "rc-menu/assets/index.css";
 import { SearchByArticle } from "../search/SearchByArticle";
 import { GetOrderData } from "../../api/GetData";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setPathName,
   removePathName,
@@ -46,6 +46,9 @@ const SideBar = ({ fetchTableData }) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const { pathName, name, extract_code, fuzzy_code } = useSelector(
+    (state: any) => state.data
+  );
 
   const onSelect = (info: { selectedKeys: string[]; key: string }) => {
     setSelectedKeys(info.selectedKeys);
@@ -85,19 +88,18 @@ const SideBar = ({ fetchTableData }) => {
       <div>
         <Menu
           multiple
-          className="sidebar-menu"
           onSelect={onSelect}
           onDeselect={onDeselect}
           onOpenChange={(openKeys: string[]) => setOpenKeys(openKeys)}
           openKeys={openKeys}
           selectedKeys={selectedKeys}
+          mode={window.innerWidth < 768 ? "inline" : "vertical"}
         >
           {menuData}
         </Menu>
       </div>
 
       <div className="menu-buttons">
-        <button className="buttonSelect">Выбрать все</button>
         <button className="buttonSelect" onClick={deselectAll}>
           Снять выбор
         </button>
@@ -110,7 +112,12 @@ const SideBar = ({ fetchTableData }) => {
 
       <div>
         <button className="buttonSelect getData" onClick={fetchTableData}>
-          Получить данные
+          {pathName.some((item) => item.trim() !== "") ||
+          name.some((item) => item.trim() !== "") ||
+          extract_code.some((item) => item.trim() !== "") ||
+          fuzzy_code.some((item) => item.trim() !== "")
+            ? "Получить данные"
+            : "Получить все данные"}
         </button>
       </div>
     </div>

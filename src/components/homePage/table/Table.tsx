@@ -12,8 +12,7 @@ import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import { GenerateExcel } from "../../api/GetData";
 
-const DataTable = ({ data,setTableData ,loading ,}) => {
-  // const [tableData, setTableData] = useState(data.products || []);
+const DataTable = ({ data, setTableData, loading }) => {
   const [downloading, setDownloading] = useState(false);
   const globalTheme = useTheme();
   const tableTheme = useMemo(

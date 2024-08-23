@@ -1,32 +1,85 @@
-import React from "react";
-import { addName, addExtractCode } from "../../../store/reducers/DataReducer";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  addName,
+  addExtractCode,
+  addFuzzyCode,
+} from "../../../store/reducers/DataReducer";
+import ExpandLessTwoToneIcon from "@mui/icons-material/ExpandLessTwoTone";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 
 export const SearchByArticle = () => {
   const dispatch = useDispatch();
 
+  const [isExtractCodeVisible, setExtractCodeVisible] = useState(false);
+  const [isFuzzyCodeVisible, setFuzzyCodeVisible] = useState(false);
+  const [isNameVisible, setNameVisible] = useState(false);
+
   return (
     <div className="search-article-container">
-      <div className="article-inputs">
-        <div className="article-input">
-          <label>Код товара:</label>
-          <input
-            type="text"
+      <div className="article-input">
+        <button
+          onClick={() => setExtractCodeVisible(!isExtractCodeVisible)}
+           className="buttonArticle"
+        >
+          {isExtractCodeVisible ? (
+            <ExpandLessTwoToneIcon />
+          ) : (
+            <ExpandMoreTwoToneIcon />
+          )}
+          Код товара
+        </button>
+        {isExtractCodeVisible && (
+          <textarea
             placeholder="Введите код"
-            title="Введите код товара через пробел"
+            title="Введите код товара через Enter"
             onChange={(e) => dispatch(addExtractCode(e.target.value))}
           />
-        </div>
+        )}
+      </div>
 
-        <div className="article-input">
-          <label>Наименование товара:</label>
+      <div className="article-input">
+        <button
+          onClick={() => setFuzzyCodeVisible(!isFuzzyCodeVisible)}
+         className="buttonArticle"
+        >
+          {isFuzzyCodeVisible ? (
+            <ExpandLessTwoToneIcon />
+          ) : (
+            <ExpandMoreTwoToneIcon />
+          )}
+          Код товара (нечёткий)
+        </button>
+        {isFuzzyCodeVisible && (
           <input
-            placeholder="Введите наименование"
             type="text"
+            placeholder="Введите нечёткий код"
+            title="Введите код товара через пробел"
+            onChange={(e) => dispatch(addFuzzyCode(e.target.value))}
+          />
+        )}
+      </div>
+
+      <div className="article-input">
+        <button
+          onClick={() => setNameVisible(!isNameVisible)}
+             className="buttonArticle"
+        >
+          {isNameVisible ? (
+            <ExpandLessTwoToneIcon />
+          ) : (
+            <ExpandMoreTwoToneIcon />
+          )}
+          Наименование товара
+        </button>
+        {isNameVisible && (
+          <input
+            type="text"
+            placeholder="Введите наименование"
             title="Введите наименование товара через пробел"
             onChange={(e) => dispatch(addName(e.target.value))}
           />
-        </div>
+        )}
       </div>
     </div>
   );

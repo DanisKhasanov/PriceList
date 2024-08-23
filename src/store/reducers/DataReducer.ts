@@ -4,12 +4,14 @@ interface DataState {
   pathName: string[];
   name: string[];
   extract_code: string[];
+  fuzzy_code: string[];
 }
 
 const initialState: DataState = {
   pathName: [],
   name: [],
   extract_code: [],
+  fuzzy_code: [],
 };
 
 const dataSlice = createSlice({
@@ -30,9 +32,17 @@ const dataSlice = createSlice({
     addExtractCode(state, action: PayloadAction<string>) {
       state.extract_code = [action.payload];
     },
+    addFuzzyCode(state, action: PayloadAction<string>) {
+      state.fuzzy_code = [action.payload];
+    },
   },
 });
 
-export const { setPathName, removePathName, addName, addExtractCode } =
-  dataSlice.actions;
+export const {
+  setPathName,
+  removePathName,
+  addName,
+  addExtractCode,
+  addFuzzyCode,
+} = dataSlice.actions;
 export default dataSlice.reducer;

@@ -40,23 +40,28 @@ export const GetOrderData = async () => {
   }
 };
 
-export const GetDataForTable = async (pathNames: string[], name: string[] , extract_code: string[] ) => {
+export const GetDataForTable = async (pathName: string[], name: string[] , extract_code: string[], fuzzy_code: string[] ) => {
   try {
     const params = new URLSearchParams();
 
     const formattedExtractCode = extract_code
-      .flatMap(code => code.split(/[\s\n]+/)) 
-      .filter(code => code.trim() !== "")     
-      .join("|"); 
+      .map(code => code.replace(/\n/g, "|"))
+      // .filter(code => code.trim() !== "")     
+      .join("|");
     
-    if (pathNames.length > 0) {
-      params.append('path_name', pathNames.join("|"));
+    if (pathName.length > 0) {
+      params.append('path_name', pathName.join("|"));
     }
     if (name.length > 0) {
       params.append('name', name.join("|"));
     }
+
+    console.log(formattedExtractCode);
     if (formattedExtractCode) {
       params.append('extract_code', formattedExtractCode);
+    }
+    if (fuzzy_code.length > 0) {
+      params.append('fuzzy_code', fuzzy_code.join("|"));
     }
 
     const response = await api.get(`get_data?${params.toString()}`, {
