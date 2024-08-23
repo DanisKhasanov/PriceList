@@ -22,12 +22,12 @@ export const SearchByArticle = () => {
           onClick={() => setExtractCodeVisible(!isExtractCodeVisible)}
            className="buttonArticle"
         >
+          Код товара
           {isExtractCodeVisible ? (
             <ExpandLessTwoToneIcon />
           ) : (
             <ExpandMoreTwoToneIcon />
           )}
-          Код товара
         </button>
         {isExtractCodeVisible && (
           <textarea
@@ -43,12 +43,12 @@ export const SearchByArticle = () => {
           onClick={() => setFuzzyCodeVisible(!isFuzzyCodeVisible)}
          className="buttonArticle"
         >
+          Код товара (нечёткий)
           {isFuzzyCodeVisible ? (
             <ExpandLessTwoToneIcon />
           ) : (
             <ExpandMoreTwoToneIcon />
           )}
-          Код товара (нечёткий)
         </button>
         {isFuzzyCodeVisible && (
           <input
@@ -65,12 +65,12 @@ export const SearchByArticle = () => {
           onClick={() => setNameVisible(!isNameVisible)}
              className="buttonArticle"
         >
+          Наименование товара
           {isNameVisible ? (
             <ExpandLessTwoToneIcon />
           ) : (
             <ExpandMoreTwoToneIcon />
           )}
-          Наименование товара
         </button>
         {isNameVisible && (
           <input

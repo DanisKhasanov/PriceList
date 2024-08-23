@@ -88,8 +88,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  /* width: calc(100% - 120px); */
-  width: 100%;
+  width: calc(100% - 5px);
+  /* width: 100%; */
   flex-wrap: wrap;
 }
 
