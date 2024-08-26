@@ -20,13 +20,13 @@ export const SearchByArticle = () => {
       <div className="article-input">
         <button
           onClick={() => setExtractCodeVisible(!isExtractCodeVisible)}
-           className="buttonArticle"
+          className="buttonArticle"
         >
-          Код товара
+          <span className="button-text">Код товара</span>
           {isExtractCodeVisible ? (
-            <ExpandLessTwoToneIcon />
+            <ExpandLessTwoToneIcon style={{ fontSize: 20 }} />
           ) : (
-            <ExpandMoreTwoToneIcon />
+            <ExpandMoreTwoToneIcon style={{ fontSize: 20 }} />
           )}
         </button>
         {isExtractCodeVisible && (
@@ -41,13 +41,13 @@ export const SearchByArticle = () => {
       <div className="article-input">
         <button
           onClick={() => setFuzzyCodeVisible(!isFuzzyCodeVisible)}
-         className="buttonArticle"
+          className="buttonArticle"
         >
-          Код товара (нечёткий)
+          <span className="button-text">Код товара (нечёткий)</span>
           {isFuzzyCodeVisible ? (
-            <ExpandLessTwoToneIcon />
+            <ExpandLessTwoToneIcon style={{ fontSize: 20 }} />
           ) : (
-            <ExpandMoreTwoToneIcon />
+            <ExpandMoreTwoToneIcon style={{ fontSize: 20 }} />
           )}
         </button>
         {isFuzzyCodeVisible && (
@@ -63,13 +63,13 @@ export const SearchByArticle = () => {
       <div className="article-input">
         <button
           onClick={() => setNameVisible(!isNameVisible)}
-             className="buttonArticle"
+          className="buttonArticle"
         >
-          Наименование товара
+          <span className="button-text">Наименование товара</span>
           {isNameVisible ? (
-            <ExpandLessTwoToneIcon />
+            <ExpandLessTwoToneIcon style={{ fontSize: 20 }} />
           ) : (
-            <ExpandMoreTwoToneIcon />
+            <ExpandMoreTwoToneIcon style={{ fontSize: 20 }} />
           )}
         </button>
         {isNameVisible && (

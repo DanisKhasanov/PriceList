@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Menu, { SubMenu, Item as MenuItem } from "rc-menu";
 import "rc-menu/assets/index.css";
 import { SearchByArticle } from "../search/SearchByArticle";
-import { GetOrderData } from "../../api/GetData";
+import { GetOrderData } from "../../api/Api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPathName,
   removePathName,
 } from "../../../store/reducers/DataReducer";
+import { Filter } from "../filter/Filter";
 
 const buildMenuTree = (paths: string[]) => {
   const tree: any = {};
@@ -108,6 +109,8 @@ const SideBar = ({ fetchTableData }) => {
       <p className="menu-title">Артикулы:</p>
       <div>
         <SearchByArticle />
+        <p className="menu-title">Фильтры:</p>
+        <Filter />
       </div>
 
       <div>

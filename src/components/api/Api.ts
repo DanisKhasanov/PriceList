@@ -40,36 +40,57 @@ export const GetOrderData = async () => {
   }
 };
 
-export const GetDataForTable = async (pathName: string[], name: string[] , extract_code: string[], fuzzy_code: string[] ) => {
+export const GetDataForTable = async (
+  pathName: string[],
+  name: string[],
+  extract_code: string[],
+  fuzzy_code: string[],
+  stock_zero_flag: boolean,
+  oil_discriptions: boolean,
+  stock_show_flag: boolean
+) => {
   try {
     const params = new URLSearchParams();
 
     const formattedExtractCode = extract_code
-      .map(code => code.replace(/\n/g, "|"))
-      // .filter(code => code.trim() !== "")     
+      .map((code) => code.replace(/\n/g, "|"))
       .join("|");
-    
+
     if (pathName.length > 0) {
-      params.append('path_name', pathName.join("|"));
+      params.append("path_name", pathName.join("|"));
     }
     if (name.length > 0) {
-      params.append('name', name.join("|"));
+      params.append("name", name.join("|"));
     }
 
-    console.log(formattedExtractCode);
     if (formattedExtractCode) {
-      params.append('extract_code', formattedExtractCode);
+      params.append("extract_code", formattedExtractCode);
     }
     if (fuzzy_code.length > 0) {
-      params.append('fuzzy_code', fuzzy_code.join("|"));
+      params.append("fuzzy_code", fuzzy_code.join("|"));
     }
 
-    const response = await api.get(`get_data?${params.toString()}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (stock_zero_flag) {
+      params.append("stock_zero_flag", stock_zero_flag.toString());
+    }
+
+    if (oil_discriptions) {
+      params.append("oil_discriptions", oil_discriptions.toString());
+    }
+
+    if (stock_show_flag) {
+      params.append("stock_show_flag", stock_show_flag.toString());
+    }
+    const response = await api.get(
+      `get_data?${params.toString()}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const responseData = response.data;
+    console.log(responseData);
     return responseData.products || [];
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -112,4 +133,3 @@ export const GenerateExcel = async (data) => {
     console.error("Ошибка при генерации Excel-файла:", error);
   }
 };
-

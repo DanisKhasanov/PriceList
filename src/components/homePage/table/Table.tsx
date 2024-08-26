@@ -10,7 +10,9 @@ import { Box, Button, IconButton, CircularProgress } from "@mui/material";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
-import { GenerateExcel } from "../../api/GetData";
+
+import { GenerateExcel } from "../../api/Api";
+import { useSelector } from "react-redux";
 
 const DataTable = ({ data, setTableData, loading }) => {
   const [downloading, setDownloading] = useState(false);
@@ -47,7 +49,7 @@ const DataTable = ({ data, setTableData, loading }) => {
       id: "actions",
       Cell: ({ row }) => (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <IconButton color="error" onClick={() => handleDeleteRow(row.index)}>
+          <IconButton color="error" onClick={() => deleteRow(row.index)}>
             <DeleteForeverSharpIcon />
           </IconButton>
         </Box>
@@ -127,12 +129,11 @@ const DataTable = ({ data, setTableData, loading }) => {
     }
   };
 
-  const handleDeleteRow = (rowIndex: number) => {
+  const deleteRow = (rowIndex: number) => {
     setTableData((prevData) =>
       prevData.filter((_, index: number) => index !== rowIndex)
     );
   };
-
   const clearTable = () => {
     setTableData([]);
   };
@@ -180,6 +181,7 @@ const DataTable = ({ data, setTableData, loading }) => {
                 }}
                 table={table}
               />
+
               <Button
                 sx={{
                   color: "black",
@@ -191,9 +193,10 @@ const DataTable = ({ data, setTableData, loading }) => {
                 }}
                 onClick={() => download(table)}
               >
-                <GetAppIcon />
-                Download
+                <GetAppIcon style={{ marginRight: 7 }} />
+                Загрузить Excel
               </Button>
+
               <Button
                 sx={{
                   color: "black",
@@ -206,8 +209,8 @@ const DataTable = ({ data, setTableData, loading }) => {
                 }}
                 onClick={clearTable}
               >
-                <HighlightOffSharpIcon />
-                Clear Table
+                <HighlightOffSharpIcon style={{ marginRight: 7 }} />
+                Очистить таблицу
               </Button>
             </Box>
           )}

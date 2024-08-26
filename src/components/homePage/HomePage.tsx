@@ -1,20 +1,34 @@
 import React, { useState } from "react";
-import { GetDataForTable } from "./../api/GetData";
+import { GetDataForTable } from "./../api/Api";
 import { useSelector } from "react-redux";
 import DataTable from "./table/Table";
 import SideBar from "./menu/SideBar";
 
 const HomePage = () => {
   const [tableData, setTableData] = useState<any[]>([]);
-  const { pathName, name, extract_code, fuzzy_code } = useSelector(
-    (state: any) => state.data
-  );
+  const {
+    pathName,
+    name,
+    extract_code,
+    fuzzy_code,
+    stock_zero_flag,
+    oil_discriptions,
+    stock_show_flag,
+  } = useSelector((state: any) => state.data);
   const [loading, setLoading] = useState(false);
 
   const fetchTableData = async () => {
     setLoading(true);
     try {
-      const response = await GetDataForTable(pathName, name, extract_code, fuzzy_code);
+      const response = await GetDataForTable(
+        pathName,
+        name,
+        extract_code,
+        fuzzy_code,
+        stock_zero_flag,
+        oil_discriptions,
+        stock_show_flag
+      );
       const newTableData = [...tableData];
       response.forEach((item: any) => {
         const index = newTableData.findIndex((el) => el.id === item.id);
@@ -37,6 +51,7 @@ const HomePage = () => {
       <div className="sidebar">
         <SideBar fetchTableData={fetchTableData} />
       </div>
+
       <div className="content">
         <DataTable
           data={tableData}

@@ -70,18 +70,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  width: calc(100% - 30px);
   max-width: 630px;
-  border-radius: 10px;
   padding: 20px;
   transition: width 0.3s ease;
 }
 
-.article-inputs {
-  width: 100%;
+/* .article-inputs {
   display: flex;
-  flex-direction: column;
-}
+  flex-direction: column; */
+/* } */
 
 .article-input {
   display: flex;
@@ -89,16 +87,15 @@
   align-items: center;
   margin-bottom: 10px;
   width: calc(100% - 5px);
-  /* width: 100%; */
   flex-wrap: wrap;
 }
 
 .article-input label {
   font-size: 15px;
   color: #404043;
-  width: auto;
+  /* width: auto; */
   margin-right: 10px;
-  flex-basis: 100%;
+  /* flex-basis: 100%; */
 }
 
 .article-input textarea,
@@ -118,21 +115,25 @@
   resize: vertical;
 }
 
-
-.buttonArticle{
-  margin-left: 30px;
-  width: calc(100% - 60px);
+.buttonArticle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 10px);
   height: 50px;
   margin: 5px;
-  border-radius: 10px;
+  border-radius: 7px;
   border: 1px solid #ccc;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 3.75px;
-  font-size: 15px;
+  font-size: 16px;
   color: #404340;
-  background-color: #cdcdcd;
+  background-color: #e7e7e7;
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+.button-text {
+  flex: 1;
 }
 .menu-button {
   display: flex;
@@ -143,7 +144,6 @@
 .buttonSelect {
   margin-left: 30px;
   width: calc(100% - 10px);
-  /* width: 100%; */
   height: 50px;
   margin: 5px;
   border-radius: 10px;
