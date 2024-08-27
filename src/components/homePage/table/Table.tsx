@@ -11,7 +11,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { Box, Button, IconButton, CircularProgress, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, CircularProgress } from "@mui/material";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
@@ -214,99 +214,90 @@ const DataTable = ({ data, setTableData, loading }) => {
                 alignItems: isSmallScreen ? "stretch" : "center",
               }}
             >
-              <Tooltip title="Фильтры">
-                <MRT_ToggleFiltersButton
-                  sx={{
-                    borderRadius: "3px",
-                    border: "1px solid #ccc;",
-                    height: "40px",
-                    marginLeft: isSmallScreen ? "0" : "5px",
-                    marginBottom: isSmallScreen ? "5px" : "0",
-                    ":hover": {
-                      border: "1px solid black",
-                      background: "white",
-                    },
-                  }}
-                  table={table}
-                />
-              </Tooltip>
-              <Tooltip title="Полный экран">
-                <MRT_ToggleFullScreenButton
-                  sx={{
-                    borderRadius: "3px",
-                    border: "1px solid #ccc;",
-                    height: "40px",
-                    marginLeft: isSmallScreen ? "0" : "10px",
-                    marginBottom: isSmallScreen ? "5px" : "0",
-                    ":hover": {
-                      border: "1px solid black",
-                      background: "white",
-                    },
-                  }}
-                  table={table}
-                />
-              </Tooltip>
-              <Tooltip title="Сортировка по популярности">
-                <Button
-                  sx={{
-                    color: "black",
-                    marginLeft: isSmallScreen ? "0" : "10px",
-                    marginBottom: isSmallScreen ? "5px" : "0",
-                    border: "1px solid #ccc;",
-                    fontSize: "13px",
-                    height: "40px",
-                    ":hover": {
-                      border: "1px solid black",
-                      background: "white",
-                    },
-                  }}
-                  onClick={() => sortTableByPopularity(table)}
-                >
-                  <SwapVertIcon style={{ marginRight: 7 }} />
-                  {!isSmallScreen && "Сортировка по популярности"}
-                </Button>
-              </Tooltip>
-              <Tooltip title="Загрузить Excel">
-                <Button
-                  sx={{
-                    color: "black",
-                    marginLeft: isSmallScreen ? "0" : "10px",
-                    marginBottom: isSmallScreen ? "5px" : "0",
-                    border: "1px solid #ccc;",
-                    fontSize: "13px",
-                    height: "40px",
-                    ":hover": {
-                      border: "1px solid black",
-                      background: "white",
-                    },
-                  }}
-                  onClick={() => download(table)}
-                >
-                  <GetAppIcon style={{ marginRight: 7 }} />
-                  {!isSmallScreen && "Загрузить Excel"}
-                </Button>
-              </Tooltip>
-              <Tooltip title="Очистить таблицу">
-                <Button
-                  sx={{
-                    color: "black",
-                    height: "40px",
-                    marginLeft: isSmallScreen ? "0" : "10px",
-                    marginBottom: isSmallScreen ? "5px" : "0",
-                    background: "#F08080",
-                    border: "1px solid #ccc;",
-                    fontSize: "13px",
-                    ":hover": {
-                      border: "1px solid black",
-                      background: "red",
-                    },
-                  }}
-                  onClick={clearTable}
-                >
-                  <HighlightOffSharpIcon style={{ marginRight: 7 }} />
-                  {!isSmallScreen && "Очистить таблицу"}
-                </Button>
-              </Tooltip>
+              <MRT_ToggleFiltersButton
+                sx={{
+                  borderRadius: "3px",
+                  border: "1px solid #ccc;",
+                  height: "40px",
+                  marginLeft: isSmallScreen ? "0" : "5px",
+                  marginBottom: isSmallScreen ? "5px" : "0",
+                  ":hover": {
+                    border: "1px solid black",
+                    background: "white",
+                  },
+                }}
+                table={table}
+              />
+              <MRT_ToggleFullScreenButton
+                sx={{
+                  borderRadius: "3px",
+                  border: "1px solid #ccc;",
+                  height: "40px",
+                  marginLeft: isSmallScreen ? "0" : "10px",
+                  marginBottom: isSmallScreen ? "5px" : "0",
+                  ":hover": {
+                    border: "1px solid black",
+                    background: "white",
+                  },
+                }}
+                table={table}
+              />
+              <Button
+                sx={{
+                  color: "black",
+                  marginLeft: isSmallScreen ? "0" : "10px",
+                  marginBottom: isSmallScreen ? "5px" : "0",
+                  border: "1px solid #ccc;",
+                  fontSize: "13px",
+                  height: "40px",
+                  ":hover": {
+                    border: "1px solid black",
+                    background: "white",
+                  },
+                }}
+                onClick={() => sortTableByPopularity(table)}
+              >
+                <SwapVertIcon style={{ marginRight: 7 }} />
+                {!isSmallScreen && "Сортировка по популярности"}
+              </Button>
+              <Button
+                sx={{
+                  color: "black",
+                  marginLeft: isSmallScreen ? "0" : "10px",
+                  marginBottom: isSmallScreen ? "5px" : "0",
+                  border: "1px solid #ccc;",
+                  fontSize: "13px",
+                  height: "40px",
+                  ":hover": {
+                    border: "1px solid black",
+                    background: "white",
+                  },
+                }}
+                onClick={() => download(table)}
+              >
+                <GetAppIcon style={{ marginRight: 7 }} />
+                {!isSmallScreen && "Загрузить Excel"}
+              </Button>
+              <Button
+                sx={{
+                  color: "black",
+                  height: "40px",
+                  marginLeft: isSmallScreen ? "0" : "10px",
+                  marginBottom: isSmallScreen ? "5px" : "0",
+                  background: "#F08080",
+                  border: "1px solid #ccc;",
+                  fontSize: "13px",
+                  ":hover": {
+                    border: "1px solid black",
+                    background: "red",
+                  },
+                }}
+                onClick={clearTable}
+              >
+                <HighlightOffSharpIcon style={{ marginRight: 7 }} />
+                {!isSmallScreen && "Очистить таблицу"}
+              </Button>
+              {/* > */}
             </Box>
           )}
           muiTableBodyCellProps={() => ({

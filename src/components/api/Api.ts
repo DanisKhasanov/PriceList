@@ -10,23 +10,23 @@ const api = axios.create({
 
 export const GetOrderData = async () => {
   try {
-    await api.post(
-      "auth/jwt/login",
-      new URLSearchParams({
-        username: "guest",
-        password: "FLX_guest_PRICE",
-        grant_type: "",
-        scope: "",
-        client_id: "",
-        client_secret: "",
-      }),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json",
-        },
-      }
-    );
+    // await api.post(
+    //   "auth/jwt/login",
+    //   new URLSearchParams({
+    //     username: "guest",
+    //     password: "FLX_guest_PRICE",
+    //     grant_type: "",
+    //     scope: "",
+    //     client_id: "",
+    //     client_secret: "",
+    //   }),
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/x-www-form-urlencoded",
+    //       Accept: "application/json",
+    //     },
+    //   }
+    // );
 
     const response = await api.get("get_filter?filter_name=pathName", {
       headers: {
