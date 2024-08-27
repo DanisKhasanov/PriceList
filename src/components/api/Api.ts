@@ -81,16 +81,12 @@ export const GetDataForTable = async (
     if (stock_show_flag) {
       params.append("stock_show_flag", stock_show_flag.toString());
     }
-    const response = await api.get(
-      `get_data?${params.toString()}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await api.get(`get_data?${params.toString()}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const responseData = response.data;
-    console.log(responseData);
     return responseData.products || [];
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -131,5 +127,19 @@ export const GenerateExcel = async (data) => {
     window.URL.revokeObjectURL(link.href);
   } catch (error) {
     console.error("Ошибка при генерации Excel-файла:", error);
+  }
+};
+
+export const SortTableByPopularity = async () => {
+  try {
+    const response = await api.get("get_filter?filter_name=counterpartyABC", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
   }
 };
