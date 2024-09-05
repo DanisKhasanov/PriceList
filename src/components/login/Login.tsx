@@ -1,68 +1,53 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Authorisation } from "../api/Api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/auth/jwt/login",
-        new URLSearchParams({
-          username: username,
-          password: password,
-          grant_type: "",
-          scope: "",
-          client_id: "",
-          client_secret: "",
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Accept: "application/json",
-          },
-          withCredentials: true, // Обязательно для работы с cookie
-        }
-      );
-
-      // Проверяем, успешно ли был выполнен вход
-      // if (response.status === 200) {
-        navigate("/home"); // Переходим на главную страницу
-      // } else {
-        // console.error("Ошибка авторизации");
-      // }
+      const response = await Authorisation(username, password);
+      if (response) {
+        navigate("/");
+      } else {
+        alert("Неверный логин или пароль");
+      }
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);
     }
   };
 
   return (
-    <div style={{color:'black'}}>
-      <h1>Войти</h1>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Логин:</label>
+    <div className="login-container">
+      <h1 className="login-header">Авторизация</h1>
+      <form onSubmit={handleLogin} className="login-form">
+        <div className="login-input-group">
+          <label className="login-label">Логин:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            className="login-input"
           />
         </div>
-        <div>
-          <label>Пароль:</label>
+        <div className="login-input-group">
+          <label className="login-label">Пароль:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="login-input"
           />
         </div>
-        <button type="submit">Войти</button>
+        <button type="submit" className="login-button">
+          Войти
+        </button>
       </form>
     </div>
   );

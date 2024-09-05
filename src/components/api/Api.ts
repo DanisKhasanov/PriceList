@@ -8,25 +8,47 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const GetOrderData = async () => {
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+export const Authorisation = async (username: string, password: string) => {
   try {
-    // await api.post(
-    //   "auth/jwt/login",
-    //   new URLSearchParams({
+    const response = await api.post(
+      "http://127.0.0.1:8000/auth/jwt/login",
+      new URLSearchParams({
+        username: username,
+        password: password,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+      }
+    );
+    if (response.status === 200 || response.status === 204) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    return false;
+  }
+};
+
+export const GetPathName = async () => {
+  try {
     //     username: "guest",
     //     password: "FLX_guest_PRICE",
-    //     grant_type: "",
-    //     scope: "",
-    //     client_id: "",
-    //     client_secret: "",
-    //   }),
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/x-www-form-urlencoded",
-    //       Accept: "application/json",
-    //     },
-    //   }
-    // );
 
     const response = await api.get("get_filter?filter_name=pathName", {
       headers: {

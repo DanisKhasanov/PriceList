@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Menu, { SubMenu, Item as MenuItem } from "rc-menu";
 import "rc-menu/assets/index.css";
 import { SearchByArticle } from "../search/SearchByArticle";
-import { GetOrderData } from "../../api/Api";
+import { GetPathName } from "../../api/Api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPathName,
@@ -71,7 +71,7 @@ const SideBar = ({ fetchTableData }) => {
 
   const getOrderData = async () => {
     try {
-      const response = await GetOrderData();
+      const response = await GetPathName();
       setMenuData(buildMenuTree(response));
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);

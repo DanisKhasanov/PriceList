@@ -30,11 +30,9 @@ const DataTable = ({ data, setTableData, loading }) => {
       createTheme({
         palette: {
           mode: globalTheme.palette.mode,
-          primary: {
-            main: "#1976d2",
-          },
+
           background: {
-            default: "#ffffff",
+            default: "#f5f5f5",
           },
         },
         components: {
