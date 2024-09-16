@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GetDataForTable } from "./../api/Api";
 import { useSelector } from "react-redux";
 import DataTable from "./table/Table";
-import SideBar from "./menu/SideBar";
+import SideBar from "./sideBar/SideBar";
 
 const HomePage = () => {
   const [tableData, setTableData] = useState<any[]>([]);
