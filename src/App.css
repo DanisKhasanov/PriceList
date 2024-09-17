@@ -4,6 +4,7 @@
   align-items: center;
   height: 100vh;
   background-color: #f4f4f4;
+  color: black;
 }
 @media (max-width: 768px) {
   .layout {
@@ -52,9 +53,7 @@
 }
 
 .sidebar {
-  width: calc(20% + 100px);
-  min-width: 200px;
-  max-width: 420px;
+  width: calc(15% + 100px);
   transition: width 0.3s ease;
   margin: 30px;
   padding: 20px;
@@ -142,6 +141,7 @@
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.3s ease;
+  margin-bottom: 10px;
 }
 
 .buttonSelect:hover {
@@ -149,7 +149,7 @@
 }
 
 .buttonSelect.getData {
-  margin-top: 30px;
+  margin-top: 5px;
   border-radius: 15px;
   height: 60px;
   color: white;
@@ -293,8 +293,7 @@
 .content {
   flex: 1;
   overflow: auto;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  padding: 30px 30px 30px 0px;
 }
 
 @keyframes pulse {

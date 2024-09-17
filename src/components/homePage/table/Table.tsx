@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   MaterialReactTable,
+  MRT_GlobalFilterTextField,
   MRT_ToggleFiltersButton,
   MRT_ToggleFullScreenButton,
+  useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
 import {
-  createTheme,
-  ThemeProvider,
+  
   useTheme,
   useMediaQuery,
 } from "@mui/material";
@@ -24,30 +25,6 @@ const DataTable = ({ data, setTableData, loading }) => {
   const globalTheme = useTheme();
   const isSmallScreen = useMediaQuery(globalTheme.breakpoints.down("sm"));
   const stockShowFlag = useSelector((state: any) => state.data.stock_show_flag);
-
-  const tableTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: globalTheme.palette.mode,
-
-          background: {
-            default: "#f5f5f5",
-          },
-        },
-        components: {
-          MuiTableCell: {
-            styleOverrides: {
-              head: {
-                color: "black",
-                fontSize: "1.1rem",
-              },
-            },
-          },
-        },
-      }),
-    [globalTheme]
-  );
 
   const columns: MRT_ColumnDef<any>[] = useMemo(() => {
     const cols: MRT_ColumnDef<any>[] = [
@@ -110,7 +87,6 @@ const DataTable = ({ data, setTableData, loading }) => {
       },
     ];
 
-    // Добавляем колонку Quantity только если stockShowFlag = true
     if (stockShowFlag) {
       cols.splice(4, 0, {
         header: "Quantity",
@@ -182,149 +158,115 @@ const DataTable = ({ data, setTableData, loading }) => {
       setDownloading(false);
     }
   };
+  
+  const table = useMaterialReactTable({
+    columns,
+    data,
+    enableStickyFooter: false,
+    enableColumnActions: false,
+    paginationDisplayMode: "pages",
+    initialState: {
+      density: "compact",
+      pagination: { pageSize: 20, pageIndex: 0 },
+    },
+    state: { isLoading: loading },
+    muiTableContainerProps: {
+      sx: {
+        marginTop: "30px",
+        border: "1px solid red",
+        borderRadius: "20px",
+      },
+    },
+    
+  });
 
   return (
-    <ThemeProvider theme={tableTheme}>
-      <Box sx={{ position: "relative", height: "100%" }}>
-        <MaterialReactTable
-          columns={columns}
-          data={data}
-          enableStickyFooter={false}
-          enableColumnActions={false}
-          paginationDisplayMode="pages"
-          layoutMode={"grid"}
-          initialState={{
-            density: "compact",
-            pagination: { pageSize: 20, pageIndex: 0 },
-            showGlobalFilter: true,
+    <Box>
+      <Box
+        sx={{
+          borderRadius: "10px",
+          border: "1px solid blue",
+          marginBottom: "10px",
+          padding: "10px",
+          backgroundColor: "#f5f5f5" // Фоновый цвет для отделения
+        }}
+      >
+        <MRT_GlobalFilterTextField table={table} />
+        <MRT_ToggleFiltersButton
+          sx={{
+            height: "40px",
+            marginBottom: isSmallScreen ? "5px" : "0",
           }}
-          state={{ isLoading: loading }}
-          muiTableContainerProps={{
-            sx: {
-              height: "calc(100vh - 114px)",
-            },
-          }}
-          renderToolbarInternalActions={({ table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: isSmallScreen ? "column" : "row",
-                alignItems: isSmallScreen ? "stretch" : "center",
-              }}
-            >
-              <MRT_ToggleFiltersButton
-                sx={{
-                  borderRadius: "3px",
-                  border: "1px solid #ccc;",
-                  height: "40px",
-                  marginLeft: isSmallScreen ? "0" : "5px",
-                  marginBottom: isSmallScreen ? "5px" : "0",
-                  ":hover": {
-                    border: "1px solid black",
-                    background: "white",
-                  },
-                }}
-                table={table}
-              />
-              <MRT_ToggleFullScreenButton
-                sx={{
-                  borderRadius: "3px",
-                  border: "1px solid #ccc;",
-                  height: "40px",
-                  marginLeft: isSmallScreen ? "0" : "10px",
-                  marginBottom: isSmallScreen ? "5px" : "0",
-                  ":hover": {
-                    border: "1px solid black",
-                    background: "white",
-                  },
-                }}
-                table={table}
-              />
-              <Button
-                sx={{
-                  color: "black",
-                  marginLeft: isSmallScreen ? "0" : "10px",
-                  marginBottom: isSmallScreen ? "5px" : "0",
-                  border: "1px solid #ccc;",
-                  fontSize: "13px",
-                  height: "40px",
-                  ":hover": {
-                    border: "1px solid black",
-                    background: "white",
-                  },
-                }}
-                onClick={() => sortTableByPopularity(table)}
-              >
-                <SwapVertIcon style={{ marginRight: 7 }} />
-                {!isSmallScreen && "Сортировка по популярности"}
-              </Button>
-              <Button
-                sx={{
-                  color: "black",
-                  marginLeft: isSmallScreen ? "0" : "10px",
-                  marginBottom: isSmallScreen ? "5px" : "0",
-                  border: "1px solid #ccc;",
-                  fontSize: "13px",
-                  height: "40px",
-                  ":hover": {
-                    border: "1px solid black",
-                    background: "white",
-                  },
-                }}
-                onClick={() => download(table)}
-              >
-                <GetAppIcon style={{ marginRight: 7 }} />
-                {!isSmallScreen && "Загрузить Excel"}
-              </Button>
-              <Button
-                sx={{
-                  color: "black",
-                  height: "40px",
-                  marginLeft: isSmallScreen ? "0" : "10px",
-                  marginBottom: isSmallScreen ? "5px" : "0",
-                  background: "#F08080",
-                  border: "1px solid #ccc;",
-                  fontSize: "13px",
-                  ":hover": {
-                    border: "1px solid black",
-                    background: "red",
-                  },
-                }}
-                onClick={clearTable}
-              >
-                <HighlightOffSharpIcon style={{ marginRight: 7 }} />
-                {!isSmallScreen && "Очистить таблицу"}
-              </Button>
-              {/* > */}
-            </Box>
-          )}
-          muiTableBodyCellProps={() => ({
-            sx: {
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-            },
-          })}
+          table={table}
         />
-        {downloading && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-              zIndex: 1000,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CircularProgress color="secondary" />
-          </Box>
-        )}
+
+        <MRT_ToggleFullScreenButton
+          sx={{
+            height: "40px",
+            marginBottom: isSmallScreen ? "5px" : "0",
+          }}
+          table={table}
+        />
+
+        <Button
+          sx={{
+            color: "black",
+            marginBottom: isSmallScreen ? "5px" : "0",
+            fontSize: "13px",
+          }}
+          onClick={() => sortTableByPopularity(table)}
+        >
+          <SwapVertIcon style={{ marginRight: 7 }} />
+          {!isSmallScreen && "Сортировка по популярности"}
+        </Button>
+
+        <Button
+          sx={{
+            color: "black",
+            marginBottom: isSmallScreen ? "5px" : "0",
+            fontSize: "13px",
+            height: "40px",
+          }}
+          onClick={() => download(table)}
+        >
+          <GetAppIcon style={{ marginRight: 7 }} />
+          {!isSmallScreen && "Загрузить Excel"}
+        </Button>
+
+        <Button
+          sx={{
+            color: "black",
+            height: "40px",
+            marginBottom: isSmallScreen ? "5px" : "0",
+            fontSize: "13px",
+          }}
+          onClick={clearTable}
+        >
+          <HighlightOffSharpIcon style={{ marginRight: 7 }} />
+          {!isSmallScreen && "Очистить таблицу"}
+        </Button>
+
       </Box>
-    </ThemeProvider>
+      <MaterialReactTable table={table} />
+      {downloading && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </Box>
+      )}
+    </Box>
   );
 };
 
