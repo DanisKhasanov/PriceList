@@ -61,17 +61,17 @@ export const Filter = () => {
   );
 
   const FilterSwitch = ({ label, checked, onChange }: FilterOption) => (
-    <FormControlLabel
-      control={<IOSSwitch checked={checked} onChange={onChange} />}
-      label={label}
-      labelPlacement="start"
-      sx={{
-        marginLeft: 0.5,
-        marginBottom: 1.5,
-        justifyContent: "space-between",
-        width: "97%",
-      }}
-    />
+      <FormControlLabel
+        control={<IOSSwitch checked={checked} onChange={onChange} />}
+        label={label}
+        labelPlacement="start"
+        sx={{
+          marginLeft: 0.5,
+          marginBottom: 2,
+          justifyContent: "space-between",
+          width: "97%",
+        }}
+      />
   );
   const filterOptions: FilterOption[] = [
     {
@@ -91,7 +91,7 @@ export const Filter = () => {
     },
   ];
   return (
-    <FormGroup>
+    <FormGroup sx={{ marginTop: 1 }}>
       {filterOptions.map((option, index) => (
         <FilterSwitch key={index} {...option} />
       ))}

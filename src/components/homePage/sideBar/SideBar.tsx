@@ -10,6 +10,8 @@ import {
 } from "../../../store/reducers/DataReducer";
 import { Filter } from "../filter/Filter";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const buildMenuTree = (paths: string[]) => {
   const tree: any = {};
@@ -47,6 +49,7 @@ const SideBar = ({ fetchTableData }) => {
   const [menuData, setMenuData] = useState<any>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [message, setMessage] = useState<string>("");
   const dispatch = useDispatch();
   const { pathName, name, extract_code, fuzzy_code } = useSelector(
     (state: any) => state.data
@@ -86,7 +89,21 @@ const SideBar = ({ fetchTableData }) => {
 
   return (
     <div className="sidebar-container">
-      <p className="menu-title">Каталог</p>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <p className="menu-title">Каталог</p>
+        <Tooltip
+          title="После сформированной таблицы, Вы можете дополнить ее, но при этом уберите предыдущую категорию"
+          arrow
+        >
+          <HelpOutlineTwoToneIcon
+            style={{
+              cursor: "pointer",
+              color: "rgba(5, 107, 241, 0.7)",
+              fontSize: "15px",
+            }}
+          />
+        </Tooltip>
+      </div>
       <div className="menu-container">
         <Menu
           multiple
@@ -103,33 +120,69 @@ const SideBar = ({ fetchTableData }) => {
 
       <button className="buttonSelect" onClick={deselectAll}>
         Снять выбор
-        <RefreshIcon style={{ color: "#056BF1", marginLeft: "10px" }} />
+        <RefreshIcon style={{ color: "#056BF1", marginLeft: "5px" }} />
       </button>
 
       <div className="menu-container">
-        <p className="menu-title">Артикулы</p>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <p className="menu-title">Артикулы</p>
+          <Tooltip
+            title="После добавления артикулов формируйте таблицу заново"
+            arrow
+          >
+            <HelpOutlineTwoToneIcon
+              style={{
+                cursor: "pointer",
+                color: "rgba(5, 107, 241, 0.7)",
+                fontSize: "15px",
+              }}
+            />
+          </Tooltip>
+        </div>
         <SearchByArticle />
       </div>
+
       <div className="menu-container">
-        <p className="menu-title">Фильтры</p>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <p className="menu-title">Фильтры</p>
+          <Tooltip
+            title="После применения фильтра формируйте таблицу заново"
+            arrow
+          >
+            <HelpOutlineTwoToneIcon
+              style={{
+                cursor: "pointer",
+                color: "rgba(5, 107, 241, 0.7)",
+                fontSize: "15px",
+              }}
+            />
+          </Tooltip>
+        </div>
         <Filter />
       </div>
 
       <div>
         <button
           className="buttonSelect getData"
-          onClick={fetchTableData}
-          disabled={
-            !(
-              pathName.some((item) => item.trim() !== "") ||
-              name.some((item) => item.trim() !== "") ||
-              extract_code.some((item) => item.trim() !== "") ||
-              fuzzy_code.some((item) => item.trim() !== "")
-            )
-          }
+          onClick={() => {
+            if (
+              !(
+                pathName.some((item: string) => item.trim() !== "") ||
+                name.some((item: string) => item.trim() !== "") ||
+                extract_code.some((item: string) => item.trim() !== "") ||
+                fuzzy_code.some((item: string) => item.trim() !== "")
+              )
+            ) {
+              setMessage("Выберите Каталог или заполните Артикулы");
+            } else {
+              setMessage("");
+              fetchTableData();
+            }
+          }}
         >
           Сформировать таблицу
         </button>
+        {message && <p className="post-error">{message}</p>}
       </div>
     </div>
   );

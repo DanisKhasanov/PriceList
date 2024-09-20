@@ -3,8 +3,6 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
-  color: black;
 }
 @media (max-width: 768px) {
   .layout {
@@ -18,7 +16,7 @@
 
   .search-article-container {
     width: 100%;
-    margin-left: 20px;
+    /* margin-left: 20px; */
   }
 
   .article-inputs {
@@ -57,7 +55,7 @@
   transition: width 0.3s ease;
   margin: 30px;
   padding: 20px;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 40px;
   border: 1px;
   overflow-x: auto;
@@ -65,7 +63,7 @@
 }
 
 .menu-title {
-  font-size: 25px;
+  font-size: 27px;
   color: #404043;
   margin: 5px;
   font-weight: 450;
@@ -74,23 +72,44 @@
 .rc-menu {
   border: none;
   box-shadow: none;
-  margin: 0%;
+  margin-top: 0px;
   padding: 0%;
+  color: #404049;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .rc-menu-item-active,
 .rc-menu-submenu-active > .rc-menu-submenu-title {
-  background-color: #e8e8e8;
+  border-radius: 10px;
 }
 
 .rc-menu-item-selected {
-  transform: translateZ(0);
-  background-color: #ced0d1;
+  color: #056bf1;
 }
-
+.rc-menu-vertical > .rc-menu-submenu > .rc-menu-submenu-title {
+  padding: 8px;
+}
+.rc-menu-vertical > .rc-menu-item {
+  padding: 8px;
+}
 .rc-menu-submenu-selected {
-  background-color: #ced0d1;
-  box-shadow: inset 0 0 0 1px #ccc;
+  color: #056bf1;
+  background-color: transparent;
+}
+.rc-menu-item-selected {
+  background-color: transparent;
+}
+.rc-menu-submenu-open {
+  border-radius: 60px;
+}
+.rc-menu-submenu-popup {
+  border: 1px solid #d9d9d9;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 8px;
+  background-color: #ffffff;
 }
 
 .article-input {
@@ -133,6 +152,9 @@
 }
 
 .buttonSelect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: calc(100% - 10px);
   height: 30px;
   border: none;
@@ -140,20 +162,23 @@
   background-color: #ffffff;
   font-size: 20px;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-
-.buttonSelect:hover {
-  transform: scale(1.02);
-}
-
 .buttonSelect.getData {
   margin-top: 5px;
   border-radius: 15px;
   height: 60px;
   color: white;
   background-color: #056bf1;
+}
+
+.post-error {
+  text-align: center;
+  color: red;
+  font-size: 13px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .login-container {
@@ -292,8 +317,7 @@
 
 .content {
   flex: 1;
-  overflow: auto;
-  padding: 30px 30px 30px 0px;
+  padding: 30px 30px 0px 0px;
 }
 
 @keyframes pulse {

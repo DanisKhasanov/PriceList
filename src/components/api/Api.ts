@@ -19,6 +19,8 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
 export const Authorisation = async (username: string, password: string) => {
   try {
     const response = await api.post(
@@ -116,7 +118,7 @@ export const GetDataForTable = async (
   }
 };
 
-export const GenerateExcel = async (data) => {
+export const GenerateExcel = async (data: any) => {
   try {
     const response = await api.post(
       "generate_excel",

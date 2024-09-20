@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GetDataForTable } from "./../api/Api";
 import { useSelector } from "react-redux";
-import DataTable from "./table/Table";
+import Table from "./table/Table";
 import SideBar from "./sideBar/SideBar";
 
 const HomePage = () => {
@@ -53,11 +53,7 @@ const HomePage = () => {
       </div>
 
       <div className="content">
-        <DataTable
-          data={tableData}
-          setTableData={setTableData}
-          loading={loading}
-        />
+        <Table data={tableData} setTableData={setTableData} loading={loading} />
       </div>
     </div>
   );

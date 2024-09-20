@@ -1,62 +1,42 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  MaterialReactTable,
   MRT_GlobalFilterTextField,
+  MRT_Table,
+  MRT_TablePagination,
   MRT_ToggleFiltersButton,
-  MRT_ToggleFullScreenButton,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import {
-  
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
 import { Box, Button, IconButton, CircularProgress } from "@mui/material";
-import GetAppIcon from "@mui/icons-material/GetApp";
-import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
-import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
+import ClearIcon from "@mui/icons-material/Clear";
 import { GenerateExcel, SortTableByPopularity } from "../../api/Api";
 import { useSelector } from "react-redux";
 
-const DataTable = ({ data, setTableData, loading }) => {
+const Table = ({ data, setTableData, loading }) => {
   const [downloading, setDownloading] = useState(false);
-  const globalTheme = useTheme();
-  const isSmallScreen = useMediaQuery(globalTheme.breakpoints.down("sm"));
   const stockShowFlag = useSelector((state: any) => state.data.stock_show_flag);
-
   const columns: MRT_ColumnDef<any>[] = useMemo(() => {
     const cols: MRT_ColumnDef<any>[] = [
       {
-        header: "",
-        id: "actions",
-        Cell: ({ row }) => (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <IconButton color="error" onClick={() => deleteRow(row.index)}>
-              <DeleteForeverSharpIcon />
-            </IconButton>
-          </Box>
-        ),
-        size: 30,
-      },
-      {
-        header: "Name",
+        header: "Имя",
         accessorKey: "name",
         size: 150,
       },
       {
-        header: "Code",
+        header: "Код",
         accessorKey: "code",
         size: 70,
       },
       {
-        header: "Article",
+        header: "Артикул",
         accessorKey: "article",
         size: 70,
       },
       {
-        header: "Price",
+        header: "Цена",
         accessorKey: "vip",
         Cell: ({ cell }) => `${cell.getValue()} руб.`,
         size: 50,
@@ -85,19 +65,34 @@ const DataTable = ({ data, setTableData, loading }) => {
         Cell: ({ cell }) => `${cell.getValue()} руб.`,
         size: 50,
       },
-    ];
-
-    if (stockShowFlag) {
-      cols.splice(4, 0, {
-        header: "Quantity",
+      {
+        header: "Остаток",
         accessorKey: "quantity",
-        size: 70,
-      });
-    }
+        size: 50,
+      },
+      {
+        header: "",
+        id: "actions",
+        Cell: ({ row }) => (
+          <IconButton onClick={() => deleteRow(row.index)}>
+            <CancelRoundedIcon sx={{ color: "#f40104" }} />
+          </IconButton>
+        ),
+        size: 10,
+      },
+    ];
 
     return cols;
   }, [stockShowFlag]);
 
+  const styleButton = {
+    color: "black",
+    fontSize: "20px",
+    textTransform: "none",
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+  };
   useEffect(() => {
     if (data) {
       setTableData(data);
@@ -124,6 +119,7 @@ const DataTable = ({ data, setTableData, loading }) => {
       prevData.filter((_, index: number) => index !== rowIndex)
     );
   };
+
   const clearTable = () => {
     setTableData([]);
   };
@@ -158,96 +154,153 @@ const DataTable = ({ data, setTableData, loading }) => {
       setDownloading(false);
     }
   };
-  
+
   const table = useMaterialReactTable({
     columns,
     data,
-    enableStickyFooter: false,
+    state: { isLoading: loading },
     enableColumnActions: false,
     paginationDisplayMode: "pages",
-    initialState: {
-      density: "compact",
-      pagination: { pageSize: 20, pageIndex: 0 },
+    muiPaginationProps: {
+      color: "primary",
+      shape: "rounded",
+      showRowsPerPage: false,
+      variant: "outlined",
     },
-    state: { isLoading: loading },
-    muiTableContainerProps: {
+    initialState: {
+      pagination: { pageSize: 8, pageIndex: 0 },
+      showGlobalFilter: true,
+    },
+    muiSearchTextFieldProps: {
+      placeholder: "Поиск",
       sx: {
-        marginTop: "30px",
-        border: "1px solid red",
-        borderRadius: "20px",
+        minWidth: "200px",
+        "& .MuiInput-underline:before": { borderBottom: "none" },
+        "& .MuiInput-underline:after": { borderBottom: "none" },
+        "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+          borderBottom: "none",
+        },
+        "& .MuiInputBase-input::placeholder": {
+          fontSize: "21px",
+          fontWeight: "300",
+          color: "rgba(0, 0, 0, 0.8)",
+        },
+        "& .MuiSvgIcon-root": {
+          fontSize: "25px",
+          marginTop: "-5px",
+          padding: "5px",
+          color: "rgba(0, 0, 0, 0.5)",
+        },
+      },
+      variant: "standard",
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        fontSize: "16px",
       },
     },
-    
+    muiTableBodyProps: {
+      sx: {
+        "& .MuiTypography-root": {
+          maxWidth: "none",
+        },
+      },
+    },
+
+    muiTableHeadProps: {
+      sx: {
+        "& .MuiTableRow-root": {
+          boxShadow: "none",
+        },
+        "& .MuiTableCell-root": {
+          borderBottom: "none",
+        },
+      },
+    },
   });
 
   return (
     <Box>
+      {/*Заголовок с кнопками*/}
       <Box
         sx={{
-          borderRadius: "10px",
-          border: "1px solid blue",
-          marginBottom: "10px",
-          padding: "10px",
-          backgroundColor: "#f5f5f5" // Фоновый цвет для отделения
+          display: "flex",
+          borderRadius: "30px",
+          marginBottom: "20px",
+          padding: "15px",
+          backgroundColor: "#ffffff",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <MRT_GlobalFilterTextField table={table} />
-        <MRT_ToggleFiltersButton
+        <Box
           sx={{
-            height: "40px",
-            marginBottom: isSmallScreen ? "5px" : "0",
+            borderRadius: "20px",
+            backgroundColor: "#F4F4F4",
+            padding: "10px",
           }}
-          table={table}
-        />
-
-        <MRT_ToggleFullScreenButton
-          sx={{
-            height: "40px",
-            marginBottom: isSmallScreen ? "5px" : "0",
-          }}
-          table={table}
-        />
-
-        <Button
-          sx={{
-            color: "black",
-            marginBottom: isSmallScreen ? "5px" : "0",
-            fontSize: "13px",
-          }}
-          onClick={() => sortTableByPopularity(table)}
         >
-          <SwapVertIcon style={{ marginRight: 7 }} />
-          {!isSmallScreen && "Сортировка по популярности"}
+          <MRT_GlobalFilterTextField table={table} />
+        </Box>
+
+        <Box>
+          <MRT_ToggleFiltersButton
+            table={table}
+            sx={{ "& .MuiSvgIcon-root": { fontSize: "25px" } }}
+          />
+        </Box>
+
+        <Button sx={styleButton} onClick={() => sortTableByPopularity(table)}>
+          <UnfoldLessIcon
+            style={{ marginRight: 3, fontSize: "25px", color: "#296BF1" }}
+          />
+          {"Сортировать по популярности"}
         </Button>
 
-        <Button
-          sx={{
-            color: "black",
-            marginBottom: isSmallScreen ? "5px" : "0",
-            fontSize: "13px",
-            height: "40px",
-          }}
-          onClick={() => download(table)}
-        >
-          <GetAppIcon style={{ marginRight: 7 }} />
-          {!isSmallScreen && "Загрузить Excel"}
+        <Button sx={styleButton} onClick={() => download(table)}>
+          <UploadFileIcon
+            sx={{ color: "green" }}
+            style={{ marginRight: 3, fontSize: "25px" }}
+          />
+          {"Выгрузить в Excel"}
         </Button>
 
-        <Button
-          sx={{
-            color: "black",
-            height: "40px",
-            marginBottom: isSmallScreen ? "5px" : "0",
-            fontSize: "13px",
-          }}
-          onClick={clearTable}
-        >
-          <HighlightOffSharpIcon style={{ marginRight: 7 }} />
-          {!isSmallScreen && "Очистить таблицу"}
+        <Button sx={styleButton} onClick={() => clearTable()}>
+          <ClearIcon
+            sx={{ color: "red" }}
+            style={{ marginRight: 3, fontSize: "25px" }}
+          />
+          {"Очистить таблицу"}
         </Button>
-
       </Box>
-      <MaterialReactTable table={table} />
+
+      {/*Таблица*/}
+      <Box
+        sx={{
+          backgroundColor: "#ffffff",
+          borderRadius: "30px",
+          padding: "20px",
+          height: "73vh",
+          overflow: "auto",
+        }}
+      >
+        <MRT_Table table={table} />
+      </Box>
+
+      {/*Пагинация*/}
+      <Box>
+        <MRT_TablePagination
+          table={table}
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
+      </Box>
+
+      {/*Загрузка при выгрузке*/}
       {downloading && (
         <Box
           sx={{
@@ -270,4 +323,4 @@ const DataTable = ({ data, setTableData, loading }) => {
   );
 };
 
-export default DataTable;
+export default Table;

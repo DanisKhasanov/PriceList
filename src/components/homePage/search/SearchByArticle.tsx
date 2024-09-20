@@ -33,9 +33,9 @@ const SearchField = ({
     <button onClick={() => setVisible(!isVisible)} className="buttonArticle">
       <span className="button-text">{label}</span>
       {isVisible ? (
-        <ArrowDropUpIcon style={{ fontSize: 23 }} />
+        <ArrowDropUpIcon style={{ fontSize: 23, color: "black" }} />
       ) : (
-        <ArrowDropDownIcon style={{ fontSize: 23 }} />
+        <ArrowDropDownIcon style={{ fontSize: 23, color: "black" }} />
       )}
     </button>
     {isVisible &&
@@ -133,7 +133,7 @@ export const SearchByArticle = () => {
       />
       <button className="buttonSelect" onClick={handleReset}>
         Снять выбор
-        <RefreshIcon style={{ color: "#056BF1", marginLeft: "10px" }} />
+        <RefreshIcon style={{ color: "#056BF1", marginLeft: "5px" }} />
       </button>
     </div>
   );
