@@ -8,7 +8,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   setOilDiscriptions,
-  setStockShowFlag,
   setStockZeroFlag,
 } from "../../../store/reducers/DataReducer";
 import { styled } from "@mui/material/styles";
@@ -56,29 +55,24 @@ interface FilterOption {
 
 export const Filter = () => {
   const dispatch = useDispatch();
-  const { stock_zero_flag, oil_discriptions, stock_show_flag } = useSelector(
+  const { stock_zero_flag, oil_discriptions } = useSelector(
     (state: any) => state.data
   );
 
   const FilterSwitch = ({ label, checked, onChange }: FilterOption) => (
-      <FormControlLabel
-        control={<IOSSwitch checked={checked} onChange={onChange} />}
-        label={label}
-        labelPlacement="start"
-        sx={{
-          marginLeft: 0.5,
-          marginBottom: 2,
-          justifyContent: "space-between",
-          width: "97%",
-        }}
-      />
+    <FormControlLabel
+      control={<IOSSwitch checked={checked} onChange={onChange} />}
+      label={label}
+      labelPlacement="start"
+      sx={{
+        marginLeft: 0.5,
+        marginBottom: 2,
+        justifyContent: "space-between",
+        width: "97%",
+      }}
+    />
   );
   const filterOptions: FilterOption[] = [
-    {
-      label: "Показать остатки",
-      checked: stock_show_flag,
-      onChange: () => dispatch(setStockShowFlag(!stock_show_flag)),
-    },
     {
       label: "Убрать нулевые остатки",
       checked: stock_zero_flag,

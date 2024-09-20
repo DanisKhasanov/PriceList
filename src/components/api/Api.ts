@@ -102,9 +102,9 @@ export const GetDataForTable = async (
       params.append("oil_discriptions", oil_discriptions.toString());
     }
 
-    if (stock_show_flag) {
-      params.append("stock_show_flag", stock_show_flag.toString());
-    }
+    // if (stock_show_flag) {
+    params.append("stock_show_flag", true.toString());
+    // }
     const response = await api.get(`get_data?${params.toString()}`, {
       headers: {
         "Content-Type": "application/json",

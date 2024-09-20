@@ -88,7 +88,7 @@ const SideBar = ({ fetchTableData }) => {
   }, []);
 
   return (
-    <div className="sidebar-container">
+    <>
       <div style={{ display: "flex", alignItems: "center" }}>
         <p className="menu-title">Каталог</p>
         <Tooltip
@@ -104,6 +104,7 @@ const SideBar = ({ fetchTableData }) => {
           />
         </Tooltip>
       </div>
+
       <div className="menu-container">
         <Menu
           multiple
@@ -184,7 +185,7 @@ const SideBar = ({ fetchTableData }) => {
         </button>
         {message && <p className="post-error">{message}</p>}
       </div>
-    </div>
+    </> 
   );
 };
 

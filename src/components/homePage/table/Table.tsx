@@ -7,15 +7,24 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { Box, Button, IconButton, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  CircularProgress,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import ClearIcon from "@mui/icons-material/Clear";
 import { GenerateExcel, SortTableByPopularity } from "../../api/Api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setStockShowFlag } from "../../../store/reducers/DataReducer";
 
 const Table = ({ data, setTableData, loading }) => {
+  const dispatch = useDispatch();
   const [downloading, setDownloading] = useState(false);
   const stockShowFlag = useSelector((state: any) => state.data.stock_show_flag);
   const columns: MRT_ColumnDef<any>[] = useMemo(() => {
@@ -65,11 +74,16 @@ const Table = ({ data, setTableData, loading }) => {
         Cell: ({ cell }) => `${cell.getValue()} руб.`,
         size: 50,
       },
-      {
-        header: "Остаток",
-        accessorKey: "quantity",
-        size: 50,
-      },
+
+      ...(stockShowFlag
+        ? [
+            {
+              header: "Остаток",
+              accessorKey: "quantity",
+              size: 50,
+            },
+          ]
+        : []),
       {
         header: "",
         id: "actions",
@@ -87,12 +101,17 @@ const Table = ({ data, setTableData, loading }) => {
 
   const styleButton = {
     color: "black",
-    fontSize: "20px",
+    fontSize: {
+      sm: "0px",
+      md: "14px",
+      lg: "16px",
+    },
     textTransform: "none",
     "&:hover": {
       backgroundColor: "transparent",
     },
   };
+
   useEffect(() => {
     if (data) {
       setTableData(data);
@@ -102,7 +121,20 @@ const Table = ({ data, setTableData, loading }) => {
   const download = async (table: any) => {
     const allTableData = table
       .getPrePaginationRowModel()
-      .rows.map((row: any) => row.original);
+      .rows.map((row: any) => {
+        const originalData = row.original;
+        if (stockShowFlag) {
+          return {
+            ...originalData,
+            quantity: originalData.quantity,
+          };
+        } else {
+          return {
+            ...originalData,
+            quantity: null,
+          };
+        }
+      });
 
     setDownloading(true);
     try {
@@ -115,7 +147,7 @@ const Table = ({ data, setTableData, loading }) => {
   };
 
   const deleteRow = (rowIndex: number) => {
-    setTableData((prevData) =>
+    setTableData((prevData: any) =>
       prevData.filter((_, index: number) => index !== rowIndex)
     );
   };
@@ -168,6 +200,7 @@ const Table = ({ data, setTableData, loading }) => {
       variant: "outlined",
     },
     initialState: {
+      columnOrder: columns.map((col) => col.accessorKey as string),
       pagination: { pageSize: 8, pageIndex: 0 },
       showGlobalFilter: true,
     },
@@ -206,7 +239,6 @@ const Table = ({ data, setTableData, loading }) => {
         },
       },
     },
-
     muiTableHeadProps: {
       sx: {
         "& .MuiTableRow-root": {
@@ -225,12 +257,12 @@ const Table = ({ data, setTableData, loading }) => {
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
           borderRadius: "30px",
           marginBottom: "20px",
           padding: "15px",
           backgroundColor: "#ffffff",
-          justifyContent: "space-between",
-          alignItems: "center",
         }}
       >
         <Box
@@ -246,10 +278,20 @@ const Table = ({ data, setTableData, loading }) => {
         <Box>
           <MRT_ToggleFiltersButton
             table={table}
-            sx={{ "& .MuiSvgIcon-root": { fontSize: "25px" } }}
+            sx={{
+              "& .MuiSvgIcon-root": { fontSize: "25px", color: "#056bf1" },
+            }}
           />
         </Box>
 
+        <Button sx={styleButton}>
+          <Checkbox
+            checked={stockShowFlag}
+            onChange={() => dispatch(setStockShowFlag(!stockShowFlag))}
+            sx={{ "& .MuiSvgIcon-root": { fontSize: 27, color: "#056bf1;" } }}
+          />
+          {"Остаток"}
+        </Button>
         <Button sx={styleButton} onClick={() => sortTableByPopularity(table)}>
           <UnfoldLessIcon
             style={{ marginRight: 3, fontSize: "25px", color: "#296BF1" }}
