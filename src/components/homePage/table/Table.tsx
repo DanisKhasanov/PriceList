@@ -13,7 +13,6 @@ import {
   IconButton,
   CircularProgress,
   Checkbox,
-  FormControlLabel,
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -111,7 +110,6 @@ const Table = ({ data, setTableData, loading }) => {
       backgroundColor: "transparent",
     },
   };
-
   useEffect(() => {
     if (data) {
       setTableData(data);
@@ -190,6 +188,7 @@ const Table = ({ data, setTableData, loading }) => {
   const table = useMaterialReactTable({
     columns,
     data,
+    // enableRowOrdering: true,
     state: { isLoading: loading },
     enableColumnActions: false,
     paginationDisplayMode: "pages",
@@ -199,8 +198,27 @@ const Table = ({ data, setTableData, loading }) => {
       showRowsPerPage: false,
       variant: "outlined",
     },
+
+    // muiRowDragHandleProps: ({ table }) => ({
+    //   onDragEnd: () => {
+    //     const { draggingRow, hoveredRow } = table.getState();
+    //     if (hoveredRow && draggingRow) {
+    //       data.splice(
+    //         hoveredRow.index,
+    //         0,
+    //         data.splice(draggingRow.index, 1)[0]
+    //       );
+    //       setTableData([...data]);
+    //     }
+    //   },
+    //   sx: {
+    //     cursor: "grab",
+    //   },
+    // }),
+
     initialState: {
       columnOrder: columns.map((col) => col.accessorKey as string),
+
       pagination: { pageSize: 8, pageIndex: 0 },
       showGlobalFilter: true,
     },
