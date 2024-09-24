@@ -126,9 +126,9 @@ const SideBar = ({ fetchTableData }) => {
 
       <div className="menu-container">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <p className="menu-title">Артикулы</p>
+          <p className="menu-title">Фильтры</p>
           <Tooltip
-            title="После добавления артикулов формируйте таблицу заново"
+            title="После добавления фильтра формируйте таблицу заново"
             arrow
           >
             <HelpOutlineTwoToneIcon
@@ -145,9 +145,9 @@ const SideBar = ({ fetchTableData }) => {
 
       <div className="menu-container">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <p className="menu-title">Фильтры</p>
+          <p className="menu-title">Дополнительные поля</p>
           <Tooltip
-            title="После применения фильтра формируйте таблицу заново"
+            title="После применения доп. полей формируйте таблицу заново"
             arrow
           >
             <HelpOutlineTwoToneIcon

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  MaterialReactTable,
+  MRT_ActionMenuItem,
   MRT_GlobalFilterTextField,
-  MRT_Table,
   MRT_TablePagination,
   MRT_ToggleFiltersButton,
   useMaterialReactTable,
@@ -18,6 +19,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import ClearIcon from "@mui/icons-material/Clear";
+import PushPinIcon from "@mui/icons-material/PushPin";
 import { GenerateExcel, SortTableByPopularity } from "../../api/Api";
 import { useDispatch, useSelector } from "react-redux";
 import { setStockShowFlag } from "../../../store/reducers/DataReducer";
@@ -110,6 +112,7 @@ const Table = ({ data, setTableData, loading }) => {
       backgroundColor: "transparent",
     },
   };
+
   useEffect(() => {
     if (data) {
       setTableData(data);
@@ -117,6 +120,9 @@ const Table = ({ data, setTableData, loading }) => {
   }, [data]);
 
   const download = async (table: any) => {
+    if (data.length === 0) {
+      return;
+    }
     const allTableData = table
       .getPrePaginationRowModel()
       .rows.map((row: any) => {
@@ -125,11 +131,19 @@ const Table = ({ data, setTableData, loading }) => {
           return {
             ...originalData,
             quantity: originalData.quantity,
+            variants: originalData.variants.map((variant: any) => ({
+              ...variant,
+              quantity: variant.quantity,
+            })),
           };
         } else {
           return {
             ...originalData,
             quantity: null,
+            variants: originalData.variants.map((variant: any) => ({
+              ...variant,
+              quantity: null,
+            })),
           };
         }
       });
@@ -155,6 +169,9 @@ const Table = ({ data, setTableData, loading }) => {
   };
 
   const sortTableByPopularity = async (table: any) => {
+    if (data.length === 0) {
+      return;
+    }
     try {
       setDownloading(true);
       const orderArray = await SortTableByPopularity();
@@ -185,12 +202,36 @@ const Table = ({ data, setTableData, loading }) => {
     }
   };
 
+  const fixRow = (rowIndex: number) => {
+    setTableData((prevData: any) => {
+      const newData = [...prevData];
+      const [pinnedRow] = newData.splice(rowIndex, 1);
+      newData.unshift(pinnedRow);
+      return newData;
+    });
+  };
+
   const table = useMaterialReactTable({
     columns,
     data,
-    // enableRowOrdering: true,
     state: { isLoading: loading },
+    enableCellActions: true,
     enableColumnActions: false,
+    enableTopToolbar: false,
+    enableBottomToolbar: false,
+    editDisplayMode: "cell",
+    renderCellActionMenuItems: ({ closeMenu, table, row }) => [
+      <MRT_ActionMenuItem
+        icon={<PushPinIcon />}
+        key={1}
+        label="Закрепить строку"
+        onClick={() => {
+          fixRow(row.index);
+          closeMenu();
+        }}
+        table={table}
+      />,
+    ],
     paginationDisplayMode: "pages",
     muiPaginationProps: {
       color: "primary",
@@ -199,26 +240,8 @@ const Table = ({ data, setTableData, loading }) => {
       variant: "outlined",
     },
 
-    // muiRowDragHandleProps: ({ table }) => ({
-    //   onDragEnd: () => {
-    //     const { draggingRow, hoveredRow } = table.getState();
-    //     if (hoveredRow && draggingRow) {
-    //       data.splice(
-    //         hoveredRow.index,
-    //         0,
-    //         data.splice(draggingRow.index, 1)[0]
-    //       );
-    //       setTableData([...data]);
-    //     }
-    //   },
-    //   sx: {
-    //     cursor: "grab",
-    //   },
-    // }),
-
     initialState: {
       columnOrder: columns.map((col) => col.accessorKey as string),
-
       pagination: { pageSize: 8, pageIndex: 0 },
       showGlobalFilter: true,
     },
@@ -250,18 +273,13 @@ const Table = ({ data, setTableData, loading }) => {
         fontSize: "16px",
       },
     },
-    muiTableBodyProps: {
+    muiTablePaperProps: {
       sx: {
-        "& .MuiTypography-root": {
-          maxWidth: "none",
-        },
+        boxShadow: "none",
       },
     },
     muiTableHeadProps: {
       sx: {
-        "& .MuiTableRow-root": {
-          boxShadow: "none",
-        },
         "& .MuiTableCell-root": {
           borderBottom: "none",
         },
@@ -278,7 +296,7 @@ const Table = ({ data, setTableData, loading }) => {
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: "30px",
-          marginBottom: "20px",
+          marginBottom: "15px",
           padding: "15px",
           backgroundColor: "#ffffff",
         }}
@@ -339,12 +357,12 @@ const Table = ({ data, setTableData, loading }) => {
         sx={{
           backgroundColor: "#ffffff",
           borderRadius: "30px",
-          padding: "20px",
-          height: "73vh",
+          padding: "15px",
+          height: "75vh",
           overflow: "auto",
         }}
       >
-        <MRT_Table table={table} />
+        <MaterialReactTable table={table} />
       </Box>
 
       {/*Пагинация*/}
