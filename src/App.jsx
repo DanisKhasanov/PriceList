@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import "./App.css";
-
+import { React } from "react";
 export default function App() {
   
   return (
