@@ -1,64 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   addName,
   addExtractCode,
   addFuzzyCode,
-} from "../../../store/reducers/DataReducer";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import RefreshIcon from "@mui/icons-material/Refresh";
+} from "@/store/reducers/DataReducer";
+import { CustomField } from "./customField";
+import SideBarButton from "@/components/buttons/sideBarButton";
 
-interface SearchFieldProps {
-  label: string;
-  placeholder: string;
-  isVisible: boolean;
-  setVisible: (visible: boolean) => void;
-  value: string;
-  onChange: (value: string) => void;
-  isTextArea?: boolean;
-}
-
-const SearchField = ({
-  label,
-  placeholder,
-  isVisible,
-  setVisible,
-  value,
-  onChange,
-  isTextArea = false,
-}: SearchFieldProps) => (
-
-  <div className="article-input">
-    <button onClick={() => setVisible(!isVisible)} className="buttonArticle">
-      <span className="button-text">{label}</span>
-      {isVisible ? (
-        <ArrowDropUpIcon style={{ fontSize: 23, color: "black" }} />
-      ) : (
-        <ArrowDropDownIcon style={{ fontSize: 23, color: "black" }} />
-      )}
-    </button>
-    {isVisible &&
-      (isTextArea ? (
-        <textarea
-          value={value}
-          placeholder={placeholder}
-          title={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      ) : (
-        <input
-          type="text"
-          value={value}
-          placeholder={placeholder}
-          title={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      ))}
-  </div>
-);
-
-export const SearchByArticle = () => {
+export const InputFields = () => {
   const dispatch = useDispatch();
   const [visibleFields, setVisibleFields] = useState({
     extractCode: false,
@@ -106,7 +56,7 @@ export const SearchByArticle = () => {
 
   return (
     <div className="search-article-container">
-      <SearchField
+      <CustomField
         label="Код товара"
         placeholder="Введите код товара через Enter"
         isVisible={visibleFields.extractCode}
@@ -115,7 +65,7 @@ export const SearchByArticle = () => {
         onChange={(value) => handleFieldChange("extractCode", value)}
         isTextArea
       />
-      <SearchField
+      <CustomField
         label="Код товара (нечёткий)"
         placeholder="Введите нечёткий код"
         isVisible={visibleFields.fuzzyCode}
@@ -123,7 +73,7 @@ export const SearchByArticle = () => {
         value={fieldValues.fuzzyCode}
         onChange={(value) => handleFieldChange("fuzzyCode", value)}
       />
-      <SearchField
+      <CustomField
         label="Наименование товара"
         placeholder="Введите наименование"
         isVisible={visibleFields.name}
@@ -131,10 +81,7 @@ export const SearchByArticle = () => {
         value={fieldValues.name}
         onChange={(value) => handleFieldChange("name", value)}
       />
-      <button className="buttonSelect" onClick={handleReset}>
-        Снять выбор
-        <RefreshIcon style={{ color: "#056BF1", marginLeft: "5px" }} />
-      </button>
+      <SideBarButton onClick={handleReset} label="Снять выбор" />
     </div>
   );
 };

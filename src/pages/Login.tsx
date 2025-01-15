@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Authorisation } from "../api/Api";
+import { Authorisation } from "@/api/Api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -8,7 +8,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await Authorisation(username, password);

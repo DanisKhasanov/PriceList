@@ -153,29 +153,6 @@
   transition: transform 0.3s ease;
 }
 
-.buttonSelect {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(100% - 10px);
-  height: 30px;
-  border: none;
-  color: #056bf1;
-  background-color: #ffffff;
-  font-size: 18px;
-  cursor: pointer;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.buttonSelect.getData {
-  margin-top: 5px;
-  border-radius: 15px;
-  height: 60px;
-  color: white;
-  background-color: #056bf1;
-  font-size: 20px;
-}
-
 .post-error {
   text-align: center;
   color: red;

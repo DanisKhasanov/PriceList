@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const NotFoundPage = () => {
@@ -17,7 +16,7 @@ const NotFoundPage = () => {
           Ой! Страница, которую вы ищете, не существует.
         </p>
         <button className="notfound-button" onClick={goHome}>
-       Вернуться на главную
+          Вернуться на главную
         </button>
       </div>
     </div>

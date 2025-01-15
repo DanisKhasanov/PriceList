@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const URL_API = import.meta.env.VITE_DOMEN;
+
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/",
+  baseURL: URL_API,
   headers: {
     "Content-Type": "application/json",
   },
@@ -20,43 +22,32 @@ api.interceptors.response.use(
   }
 );
 
-
 export const Authorisation = async (username: string, password: string) => {
   try {
     const response = await api.post(
-      "http://127.0.0.1:8000/auth/jwt/login",
-      new URLSearchParams({
+      "/auth/jwt/login",
+      {
         username: username,
         password: password,
-      }),
+      },
+
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json",
         },
       }
     );
     if (response.status === 200 || response.status === 204) {
       return true;
-    } else {
-      return false;
     }
-  } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
+  } catch {
     return false;
   }
 };
 
 export const GetPathName = async () => {
   try {
-    //     username: "guest",
-    //     password: "FLX_guest_PRICE",
-
-    const response = await api.get("get_filter?filter_name=pathName", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.get("get_filter?filter_name=pathName");
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -70,8 +61,8 @@ export const GetDataForTable = async (
   extract_code: string[],
   fuzzy_code: string[],
   stock_zero_flag: boolean,
-  oil_discriptions: boolean,
-  stock_show_flag: boolean
+  oil_discriptions: boolean
+  // stock_show_flag: boolean
 ) => {
   try {
     const params = new URLSearchParams();
@@ -105,11 +96,7 @@ export const GetDataForTable = async (
     // if (stock_show_flag) {
     params.append("stock_show_flag", true.toString());
     // }
-    const response = await api.get(`get_data?${params.toString()}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.get(`get_data?${params.toString()}`);
     const responseData = response.data;
     return responseData.products || [];
   } catch (error) {
