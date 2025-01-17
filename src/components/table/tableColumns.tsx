@@ -3,16 +3,9 @@ import { IconButton } from "@mui/material";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { useMemo } from "react";
 import { Product } from "@/props/product";
+import { TableColumnsProps } from "@/props/table/tableeColumnsProps";
 
-interface TableColumnsProps {
-  setTableData: React.Dispatch<React.SetStateAction<Product[]>>;
-  remainder: boolean;
-}
-
-export const TableColumns = ({
-  setTableData,
-  remainder,
-}: TableColumnsProps) =>
+export const TableColumns = ({ setTableData, remainder }: TableColumnsProps) =>
   useMemo(() => {
     const deleteRow = (rowIndex: number) => {
       setTableData((prevData: Product[]) =>

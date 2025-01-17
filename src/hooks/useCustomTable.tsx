@@ -1,41 +1,23 @@
-import { useEffect, useState } from "react";
 import {
-  MRT_ActionMenuItem,
   useMaterialReactTable,
+  MRT_ActionMenuItem,
 } from "material-react-table";
-import { Box } from "@mui/material";
 import PushPinIcon from "@mui/icons-material/PushPin";
-import { GenerateExcel, SortTableByPopularity } from "../../api/Api";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import TableHeader from "./tableHeader";
-import { TableBody } from "./tableBody";
-import Loading from "@/helpers/loading";
-import { TableColumns } from "./tableColumns";
+import { TableColumns } from "@/components/table/tableColumns";
 import { Product } from "@/props/product";
+import { UseCustomTableProps } from "@/props/table/useCustomTableProps";
+import { MRT_Localization_RU } from "material-react-table/locales/ru";
 
-interface TableProps {
-  data: Product[];
-  setTableData: React.Dispatch<React.SetStateAction<Product[]>>;
-  loading: boolean;
-}
-
-const Table = ({ data, setTableData, loading }: TableProps) => {
-  const [downloading, setDownloading] = useState(false);
-  const remainder = useSelector(
-    (state: RootState) => state.data.stock_show_flag
-  );
+export const useCustomTable = ({
+  data,
+  loading,
+  setTableData,
+  remainder,
+}: UseCustomTableProps) => {
   const columns = TableColumns({ setTableData, remainder });
 
-  useEffect(() => {
-    if (data) {
-      setTableData(data);
-    }
-  }, [data]);
-
-
   const fixRow = (rowIndex: number) => {
-    setTableData((prevData: any) => {
+    setTableData((prevData: Product[]) => {
       const newData = [...prevData];
       const [pinnedRow] = newData.splice(rowIndex, 1);
       newData.unshift(pinnedRow);
@@ -46,6 +28,7 @@ const Table = ({ data, setTableData, loading }: TableProps) => {
   const table = useMaterialReactTable({
     columns,
     data,
+    localization: MRT_Localization_RU,
     state: { isLoading: loading },
     enableCellActions: true,
     enableColumnActions: false,
@@ -119,20 +102,5 @@ const Table = ({ data, setTableData, loading }: TableProps) => {
     },
   });
 
-  return (
-    <Box>
-      <TableHeader
-        table={table}
-        setDownloading={setDownloading}
-        setTableData={setTableData}
-
-      />
-
-      <TableBody table={table} />
-
-      <Loading downloading={downloading} />
-    </Box>
-  );
+  return table;
 };
-
-export default Table;

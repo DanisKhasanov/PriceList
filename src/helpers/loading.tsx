@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 
-const Loading = ({ downloading }) => {
+const Loading = ({ downloading }: { downloading: boolean }) => {
   return (
     downloading && (
       <Box

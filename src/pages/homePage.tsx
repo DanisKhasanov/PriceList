@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { GetDataForTable } from "@/api/Api";
 import { useSelector } from "react-redux";
-import Table from "@/components/table/Table";
+import Table from "@/components/table/table";
 import SideBar from "@/components/sideBar/SideBar";
 import { RootState } from "@/store/store";
 import { Product } from "@/props/product";

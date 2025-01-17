@@ -1,5 +1,5 @@
-import HomePage from "@/pages/HomePage";
-import Login from "@/pages/Login";
+import HomePage from "@/pages/homePage";
+import Login from "@/pages/login";
 import NotFoundPage from "@/pages/notFoundPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
