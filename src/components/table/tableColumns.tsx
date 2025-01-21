@@ -3,9 +3,13 @@ import { IconButton } from "@mui/material";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { useMemo } from "react";
 import { Product } from "@/props/product";
-import { TableColumnsProps } from "@/props/table/tableeColumnsProps";
+import { TableColumnsProps } from "@/props/table/tableColumnsProps";
 
-export const TableColumns = ({ setTableData, remainder }: TableColumnsProps) =>
+export const TableColumns = ({
+  setTableData,
+  remainder,
+  priceToUSD,
+}: TableColumnsProps) =>
   useMemo(() => {
     const deleteRow = (rowIndex: number) => {
       setTableData((prevData: Product[]) =>
@@ -32,31 +36,31 @@ export const TableColumns = ({ setTableData, remainder }: TableColumnsProps) =>
       {
         header: "Цена",
         accessorKey: "vip",
-        Cell: ({ cell }) => `${cell.getValue()} руб.`,
+        Cell: ({ cell }) => `${cell.getValue()} ${priceToUSD ? "USD" : "руб."}`,
         size: 50,
       },
       {
         header: "VIP10",
         accessorKey: "vip10",
-        Cell: ({ cell }) => `${cell.getValue()} руб.`,
+        Cell: ({ cell }) => `${cell.getValue()} ${priceToUSD ? "USD" : "руб."}`,
         size: 50,
       },
       {
         header: "VIP25",
         accessorKey: "vip25",
-        Cell: ({ cell }) => `${cell.getValue()} руб.`,
+        Cell: ({ cell }) => `${cell.getValue()} ${priceToUSD ? "USD" : "руб."}`,
         size: 50,
       },
       {
         header: "VIP50",
         accessorKey: "vip50",
-        Cell: ({ cell }) => `${cell.getValue()} руб.`,
+        Cell: ({ cell }) => `${cell.getValue()} ${priceToUSD ? "USD" : "руб."}`,
         size: 50,
       },
       {
         header: "VIP75",
         accessorKey: "vip75",
-        Cell: ({ cell }) => `${cell.getValue()} руб.`,
+        Cell: ({ cell }) => `${cell.getValue()} ${priceToUSD ? "USD" : "руб."}`,
         size: 50,
       },
 
@@ -82,4 +86,4 @@ export const TableColumns = ({ setTableData, remainder }: TableColumnsProps) =>
     ];
 
     return cols;
-  }, [remainder]);
+  }, [remainder, priceToUSD]);

@@ -7,6 +7,7 @@ import SideBarButton from "@components/buttons/sideBarButton";
 import { Validates } from "@/helpers/validate";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
 
 const SideBar = ({ fetchTableData }: { fetchTableData: () => void }) => {
   const { showSnackbar } = useCustomSnackbar();
@@ -23,19 +24,30 @@ const SideBar = ({ fetchTableData }: { fetchTableData: () => void }) => {
     }
   };
   return (
-    <>
-      <Catalog />
+    <Box>
+      <Box
+        sx={{
+          height: "84vh",
+          overflowX: "auto",
+          scrollbarWidth: "thin",
+          mb: 2,
+        }}
+      >
+        <Catalog />
 
-      <Filters />
+        <Filters />
 
-      <AdditionalFields />
+        <AdditionalFields />
+      </Box>
 
-      <SideBarButton
-        onClick={getTableData}
-        label="Сформировать данные"
-        isPrimary
-      />
-    </>
+      <Box>
+        <SideBarButton
+          onClick={getTableData}
+          label="Сформировать данные"
+          isPrimary
+        />
+      </Box>
+    </Box>
   );
 };
 

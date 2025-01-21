@@ -5,4 +5,5 @@ export interface UseCustomTableProps {
   loading: boolean;
   setTableData: React.Dispatch<React.SetStateAction<Product[]>>;
   remainder: boolean;
+  priceToUSD: boolean;
 }

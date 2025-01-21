@@ -38,7 +38,7 @@ export const CustomSwitch = () => {
           labelPlacement="start"
           sx={{
             marginLeft: 0.5,
-            marginBottom: 2,
+            marginBottom: 1,
             justifyContent: "space-between",
             width: "97%",
           }}

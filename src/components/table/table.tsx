@@ -13,14 +13,22 @@ const Table = ({ data, setTableData, loading }: TableProps) => {
   const remainder = useSelector(
     (state: RootState) => state.data.stock_show_flag
   );
-  const table = useCustomTable({ data, loading, setTableData, remainder });
+  const priceToUSD = useSelector(
+    (state: RootState) => state.data.price_show_flag
+  );
+  const table = useCustomTable({
+    data,
+    loading,
+    setTableData,
+    remainder,
+    priceToUSD,
+  });
 
   useEffect(() => {
     if (data) {
       setTableData(data);
     }
   }, [data]);
-
   return (
     <Box>
       <TableHeader

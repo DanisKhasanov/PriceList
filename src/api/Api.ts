@@ -11,9 +11,7 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
       window.location.href = "/login";
@@ -40,7 +38,8 @@ export const Authorisation = async (username: string, password: string) => {
     if (response.status === 200 || response.status === 204) {
       return true;
     }
-  } catch {
+  } catch (error) {
+    console.error("Авторизация не удалась:", error);
     return false;
   }
 };
@@ -105,42 +104,6 @@ export const GetDataForTable = async (
   }
 };
 
-export const GenerateExcel = async (data: any) => {
-  try {
-    const response = await api.post(
-      "generate_excel",
-      { products: data },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        responseType: "blob",
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error("Network response was not ok");
-    }
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
-
-    const contentDisposition = response.headers["content-disposition"];
-    const filename = contentDisposition
-      ? contentDisposition.split("filename=")[1].replace(/"/g, "")
-      : "download.xlsx";
-
-    link.download = filename;
-    link.click();
-
-    window.URL.revokeObjectURL(link.href);
-  } catch (error) {
-    console.error("Ошибка при генерации Excel-файла:", error);
-  }
-};
-
 export const SortTableByPopularity = async () => {
   try {
     const response = await api.get("get_filter?filter_name=counterpartyABC", {
@@ -149,6 +112,18 @@ export const SortTableByPopularity = async () => {
       },
     });
     return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
+
+export const GetPricesToUSD = async () => {
+  try {
+    const response = await axios.get(
+      "https://v6.exchangerate-api.com/v6/825e9a9d057e2f4e3a22556d/latest/USD"
+    );
+    return response.data.conversion_rates.RUB;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;

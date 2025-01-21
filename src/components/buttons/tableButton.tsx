@@ -1,10 +1,13 @@
-import { SortTableByPopularity } from "@/api/Api";
+import { GetPricesToUSD, SortTableByPopularity } from "@/api/Api";
 import { Button, Checkbox, Box } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import ClearIcon from "@mui/icons-material/Clear";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import { useDispatch, useSelector } from "react-redux";
-import { setStockShowFlag } from "@/store/reducers/DataReducer";
+import {
+  setPriceShowFlag,
+  setStockShowFlag,
+} from "@/store/reducers/DataReducer";
 import { RootState } from "@/store/store";
 import {
   MRT_ToggleFiltersButton,
@@ -13,7 +16,10 @@ import {
 import { TableButtonProps } from "@/props/table/tableButtonProps";
 import useCustomSnackbar from "@/hooks/useCustomSnackbar";
 import { images } from "./test";
-import {Logo} from "../../../public/logo";
+import { Logo } from "../../../public/logo";
+import { Product } from "@/props/product";
+import { useState } from "react";
+import { validateTable } from "@/helpers/validate";
 
 const styleButton = {
   color: "black",
@@ -27,78 +33,73 @@ const styleButton = {
     backgroundColor: "transparent",
   },
 };
+
 export const TableButtonDowload = ({
   table,
   setDownloading,
 }: TableButtonProps) => {
-  // const stockShowFlag = useSelector(
-  //   (state: RootState) => state.data.stock_show_flag
-  // );
   const { showSnackbar } = useCustomSnackbar();
-  const download = async (table: any) => {
+  const priceShowFlag = useSelector(
+    (state: RootState) => state.data.price_show_flag
+  );
+  const download = (table: any) => {
     const allTableData = table
       .getPrePaginationRowModel()
       .rows.map((row: any) => row.original);
 
-    setDownloading(true);
+    if (validateTable(allTableData, showSnackbar)) return;
 
     try {
+      setDownloading(true);
       const tableBody = allTableData.map((item: any) => [
         {
           image: images,
-          fit: [100, 100],
-          margin: [0, 5, 0, 5],
+          fit: [150, 150],
         },
         {
           text: [
-            { text: `Артикул: ${item.code}\n`, bold: true },
-            { text: `Объем: ${item.volume || "N/A"}\n, `, bold: true },
-            { text: `Тип: ${item.type || "N/A"}\n`, bold: true },
-            { text: `Материал: ${item.material || "N/A"}\n`, bold: true },
-            { text: `Цена: ${item.vip || "N/A"} руб.\n`, bold: true },
-            { text: `В коробке: ${item.quantity || "N/A"}\n`, bold: true },
+            { text: `Артикул: `, bold: true },
+            `${item.code}\n`,
+            // { text: `Описание: `, bold: true },
+            // `${item.description || "N/A"}\n`,
+            { text: `Цена: `, bold: true },
+            priceShowFlag
+              ? `${item.vip || "N/A"} USD.\n`
+              : `${item.vip || "N/A"} руб.\n`,
+            { text: `В коробке: `, bold: true },
+            `${item.quantity || "N/A"}\n`,
           ],
-          margin: [10, 0, 0, 0],
         },
       ]);
 
-      if (tableBody.length === 0) {
-        showSnackbar("Сначала заполните таблицу", {
-          variant: "error",
-        });
-        return;
-      }
-
       const docDefinition = {
         content: [
-        
-          { text: "Список товаров", style: "header" },
+          { image: Logo, width: 200, alignment: "left" },
           {
             table: {
-              widths: [120, "*"],
-              body: [
-                [
-                  { text: "Изображение", bold: true, alignment: "center" },
-                  { text: "Детали", bold: true, alignment: "center" },
-                ],
-                ...tableBody,
-              ],
+              widths: [150, "*"],
+              body: tableBody,
+              dontBreakRows: true,
             },
-            style: "tableExample",
+            layout: {
+              hLineWidth: () => 0,
+              vLineWidth: () => 0,
+              paddingLeft: () => 5,
+              paddingRight: () => 5,
+              paddingTop: () => 5,
+              paddingBottom: () => 5,
+            },
+            margin: [0, 10],
           },
         ],
-        styles: {
-          header: {
-            fontSize: 18,
-            bold: true,
-            margin: [0, 0, 0, 10],
-          },
-        },
       };
 
       pdfMake.createPdf(docDefinition).open();
     } catch (error) {
-      console.error("Ошибка при создании PDF:", error);
+      showSnackbar("Ошибка при запросе на создания PDF файла", {
+        variant: "error",
+      });
+      throw error;
     } finally {
       setDownloading(false);
     }
@@ -117,8 +118,11 @@ export const TableButtonDowload = ({
 };
 
 export const TableButtonClear = ({ setTableData }: TableButtonProps) => {
+  const dispatch = useDispatch();
   const clearTable = () => {
     setTableData([]);
+    dispatch(setPriceShowFlag(false));
+    dispatch(setStockShowFlag(false));
   };
 
   return (
@@ -144,12 +148,8 @@ export const TableButtonSort = ({
       .getPrePaginationRowModel()
       .rows.map((row: any) => row.original);
 
-    if (allTableData.length === 0) {
-      showSnackbar("Сначала заполните таблицу", {
-        variant: "error",
-      });
-      return;
-    }
+    if (validateTable(allTableData, showSnackbar)) return;
+
     try {
       setDownloading(true);
       const sortArray = await SortTableByPopularity();
@@ -193,11 +193,11 @@ export const TableButtonRemainder = () => {
   const stockShowFlag = useSelector(
     (state: RootState) => state.data.stock_show_flag
   );
+  const handleStockShowFlag = () => {
+    dispatch(setStockShowFlag(!stockShowFlag));
+  };
   return (
-    <Button
-      sx={styleButton}
-      onClick={() => dispatch(setStockShowFlag(!stockShowFlag))}
-    >
+    <Button sx={styleButton} onClick={handleStockShowFlag}>
       <Checkbox
         checked={stockShowFlag}
         sx={{ "& .MuiSvgIcon-root": { fontSize: 27, color: "#056bf1;" } }}
@@ -231,5 +231,75 @@ export const TableButtonSearch = ({ table }: TableButtonProps) => {
     >
       <MRT_GlobalFilterTextField table={table} />
     </Box>
+  );
+};
+
+export const TableButtonPricesToUSD = ({
+  table,
+  setTableData,
+  setDownloading,
+}: TableButtonProps) => {
+  const { showSnackbar } = useCustomSnackbar();
+  const dispatch = useDispatch();
+  const priceShowFlag = useSelector(
+    (state: RootState) => state.data.price_show_flag
+  );
+
+  const [originalTableData, setOriginalTableData] = useState<Product[]>([]);
+
+  const toggleCurrency = async () => {
+    const allTableData = table
+      .getPrePaginationRowModel()
+      .rows.map((row: any) => row.original);
+
+    if (validateTable(allTableData, showSnackbar)) return;
+
+    try {
+      setDownloading(true);
+
+      if (!priceShowFlag) {
+        const priceToRUB = await GetPricesToUSD();
+        if (!priceToRUB || priceToRUB <= 0) {
+          showSnackbar("Некорректный курс валют, попробуйте позже", {
+            variant: "error",
+          });
+          return;
+        }
+
+        setOriginalTableData(allTableData);
+
+        const updatedTableData = allTableData.map((item: any) => ({
+          ...item,
+          vip: (item.vip / priceToRUB).toFixed(2),
+          vip10: (item.vip10 / priceToRUB).toFixed(2),
+          vip25: (item.vip25 / priceToRUB).toFixed(2),
+          vip50: (item.vip50 / priceToRUB).toFixed(2),
+          vip75: (item.vip75 / priceToRUB).toFixed(2),
+        }));
+
+        setTableData(updatedTableData);
+        showSnackbar("Цены переведены в доллары", { variant: "success" });
+      } else {
+        setTableData(originalTableData);
+        showSnackbar("Цены возвращены в рубли", { variant: "success" });
+      }
+
+      dispatch(setPriceShowFlag(!priceShowFlag));
+    } catch (error) {
+      showSnackbar("Ошибка при обработке данных", { variant: "error" });
+      console.error("Ошибка при переключении валют:", error);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <Button sx={styleButton} onClick={toggleCurrency}>
+      <Checkbox
+        checked={priceShowFlag}
+        sx={{ "& .MuiSvgIcon-root": { fontSize: 27, color: "#056bf1;" } }}
+      />
+      {priceShowFlag ? "Цены в RUB" : "Цены в USD"}
+    </Button>
   );
 };

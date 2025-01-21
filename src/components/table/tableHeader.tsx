@@ -3,11 +3,12 @@ import {
   TableButtonClear,
   TableButtonDowload,
   TableButtonFilters,
+  TableButtonPricesToUSD,
   TableButtonRemainder,
   TableButtonSearch,
   TableButtonSort,
 } from "../buttons/tableButton";
-import { TableHeaderProps } from "@/props/tableHeaderProps";
+import { TableHeaderProps } from "@/props/table/tableHeaderProps";
 
 const TableHeader = ({
   table,
@@ -31,6 +32,12 @@ const TableHeader = ({
       <TableButtonFilters table={table} />
 
       <TableButtonRemainder />
+
+      <TableButtonPricesToUSD
+        table={table}
+        setTableData={setTableData}
+        setDownloading={setDownloading}
+      />
 
       <TableButtonSort
         table={table}

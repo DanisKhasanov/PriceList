@@ -7,7 +7,8 @@ interface DataState {
   fuzzy_code: string[];
   oil_discriptions: boolean;
   stock_zero_flag: boolean;
-  stock_show_flag: boolean; 
+  stock_show_flag: boolean;
+  price_show_flag: boolean;
 }
 
 const initialState: DataState = {
@@ -18,6 +19,7 @@ const initialState: DataState = {
   oil_discriptions: false,
   stock_zero_flag: false,
   stock_show_flag: false,
+  price_show_flag: false,
 };
 
 const dataSlice = createSlice({
@@ -50,6 +52,9 @@ const dataSlice = createSlice({
     setStockShowFlag(state, action: PayloadAction<boolean>) {
       state.stock_show_flag = action.payload;
     },
+    setPriceShowFlag(state, action: PayloadAction<boolean>) {
+      state.price_show_flag = action.payload;
+    },
   },
 });
 
@@ -62,5 +67,6 @@ export const {
   setOilDiscriptions,
   setStockZeroFlag,
   setStockShowFlag,
+  setPriceShowFlag,
 } = dataSlice.actions;
 export default dataSlice.reducer;

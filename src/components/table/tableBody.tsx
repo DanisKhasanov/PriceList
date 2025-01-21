@@ -7,24 +7,22 @@ export const TableBody = ({ table }) => {
       <Box
         sx={{
           backgroundColor: "#ffffff",
-          borderRadius: "30px",
+          borderRadius: 7,
           padding: "15px",
-          height: "75vh",
-          overflow: "auto",
         }}
       >
-        <MaterialReactTable table={table} />
-      </Box>
-      <Box>
-        <MRT_TablePagination
-          table={table}
+        <Box
           sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            height: "73vh",
+            overflow: "auto",
           }}
-        />
+        >
+          <MaterialReactTable table={table} />
+        </Box>
+
+        <Box sx={{ mt: 2 }}>
+          <MRT_TablePagination table={table} />
+        </Box>
       </Box>
     </>
   );

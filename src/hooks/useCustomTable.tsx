@@ -13,8 +13,9 @@ export const useCustomTable = ({
   loading,
   setTableData,
   remainder,
+  priceToUSD
 }: UseCustomTableProps) => {
-  const columns = TableColumns({ setTableData, remainder });
+  const columns = TableColumns({ setTableData, remainder, priceToUSD });
 
   const fixRow = (rowIndex: number) => {
     setTableData((prevData: Product[]) => {
@@ -49,8 +50,8 @@ export const useCustomTable = ({
     ],
     paginationDisplayMode: "pages",
     muiPaginationProps: {
+      
       color: "primary",
-      shape: "rounded",
       showRowsPerPage: false,
       variant: "outlined",
     },
