@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Authorisation } from "@/api/Api";
+import { CircularProgress } from "@mui/material";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await Authorisation(username, password);
       if (response) {
         navigate("/");
@@ -19,6 +22,8 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);
+    } finally {
+      setLoading(false);
     }
   };
   const isFormValid = username.trim() !== "" && password.trim() !== "";
@@ -51,9 +56,13 @@ const Login = () => {
         <button
           type="submit"
           className={`login-button ${isFormValid ? "active" : "inactive"}`}
-          disabled={!isFormValid}
+          disabled={!isFormValid || loading}
         >
-          Войти
+          {loading ? (
+            <CircularProgress size={24} sx={{ color: "white" }} />
+          ) : (
+            "Войти"
+          )}
         </button>
         <div className="error-container">
           {error && <p className="login-error">{error}</p>}

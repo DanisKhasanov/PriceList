@@ -16,10 +16,12 @@ import {
 import { TableButtonProps } from "@/props/table/tableButtonProps";
 import useCustomSnackbar from "@/hooks/useCustomSnackbar";
 import { images } from "./test";
-import { Logo } from "../../../public/logo";
+// import { Logo } from "../../../public/logo";
 import { Product } from "@/props/product";
 import { useState } from "react";
 import { validateTable } from "@/helpers/validate";
+import pdfMake from "pdfmake/build/pdfmake";
+import "pdfmake/build/vfs_fonts";
 
 const styleButton = {
   color: "black",
@@ -36,7 +38,7 @@ const styleButton = {
 
 export const TableButtonDowload = ({
   table,
-  setDownloading,
+  setDownloading = () => {},
 }: TableButtonProps) => {
   const { showSnackbar } = useCustomSnackbar();
   const priceShowFlag = useSelector(
@@ -73,8 +75,12 @@ export const TableButtonDowload = ({
       ]);
 
       const docDefinition = {
+        watermark: { text: "FLX", color: "red", opacity: 0.1, italics: false },
         content: [
-          { image: Logo, width: 200, alignment: "left" },
+          // {
+          //   image: Logo,
+          //   width: 200
+          // },
           {
             table: {
               widths: [150, "*"],
@@ -89,7 +95,6 @@ export const TableButtonDowload = ({
               paddingTop: () => 5,
               paddingBottom: () => 5,
             },
-            margin: [0, 10],
           },
         ],
       };
@@ -117,7 +122,9 @@ export const TableButtonDowload = ({
   );
 };
 
-export const TableButtonClear = ({ setTableData }: TableButtonProps) => {
+export const TableButtonClear = ({
+  setTableData = () => {},
+}: TableButtonProps) => {
   const dispatch = useDispatch();
   const clearTable = () => {
     setTableData([]);
@@ -138,8 +145,8 @@ export const TableButtonClear = ({ setTableData }: TableButtonProps) => {
 
 export const TableButtonSort = ({
   table,
-  setDownloading,
-  setTableData,
+  setDownloading = () => {},
+  setTableData = () => {},
 }: TableButtonProps) => {
   const { showSnackbar } = useCustomSnackbar();
 
@@ -153,14 +160,14 @@ export const TableButtonSort = ({
     try {
       setDownloading(true);
       const sortArray = await SortTableByPopularity();
-      const dataMap = new Map();
+      const dataMap = new Map<number, any>();
 
       allTableData.forEach((item: any) => {
-        dataMap[item.id] = item;
+        dataMap.set(item.id, item);
       });
 
       const sortedProducts = sortArray
-        .map((id: number) => dataMap[id])
+        .map((id: number) => dataMap.get(id))
         .filter((item: any) => item !== undefined);
 
       const missingProducts = allTableData.filter(
@@ -178,6 +185,7 @@ export const TableButtonSort = ({
       setDownloading(false);
     }
   };
+
   return (
     <Button sx={styleButton} onClick={() => sortTableByPopularity(table)}>
       <UnfoldLessIcon
@@ -236,8 +244,8 @@ export const TableButtonSearch = ({ table }: TableButtonProps) => {
 
 export const TableButtonPricesToUSD = ({
   table,
-  setTableData,
-  setDownloading,
+  setTableData = () => {},
+  setDownloading = () => {},
 }: TableButtonProps) => {
   const { showSnackbar } = useCustomSnackbar();
   const dispatch = useDispatch();
@@ -285,9 +293,8 @@ export const TableButtonPricesToUSD = ({
       }
 
       dispatch(setPriceShowFlag(!priceShowFlag));
-    } catch (error) {
+    } catch {
       showSnackbar("Ошибка при обработке данных", { variant: "error" });
-      console.error("Ошибка при переключении валют:", error);
     } finally {
       setDownloading(false);
     }

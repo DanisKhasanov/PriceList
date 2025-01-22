@@ -29,6 +29,7 @@
 
 .layout {
   display: flex;
+  width: 100%;
 }
 
 .menu-title {
@@ -81,19 +82,9 @@
   background-color: #ffffff;
 }
 
-.article-input {
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-.article-input label {
-  font-size: 15px;
-  color: #404043;
-}
-
 .article-input textarea,
 .article-input input {
-  width: 100%;
+  width: 97%;
   height: 45px;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -118,14 +109,6 @@
   color: #404340;
   cursor: pointer;
   transition: transform 0.3s ease;
-}
-
-.post-error {
-  text-align: center;
-  color: red;
-  font-size: 13px;
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
 .login-container {
@@ -268,9 +251,16 @@
 }
 
 .sidebar {
-  min-width: 20vw;
+  min-width: 21vw;
   margin: 20px 0px 20px 20px;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 30px;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }

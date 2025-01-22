@@ -26,11 +26,17 @@ const SideBar = ({ fetchTableData }: { fetchTableData: () => void }) => {
   return (
     <Box>
       <Box
+        overflow="auto"
         sx={{
           height: "84vh",
-          overflowX: "auto",
-          scrollbarWidth: "thin",
           mb: 2,
+          "&::-webkit-scrollbar": {
+            width: "5px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "lightgrey",
+            borderRadius: "4px",
+          },
         }}
       >
         <Catalog />
@@ -40,13 +46,11 @@ const SideBar = ({ fetchTableData }: { fetchTableData: () => void }) => {
         <AdditionalFields />
       </Box>
 
-      <Box>
-        <SideBarButton
-          onClick={getTableData}
-          label="Сформировать данные"
-          isPrimary
-        />
-      </Box>
+      <SideBarButton
+        onClick={getTableData}
+        label="Сформировать таблицу"
+        isPrimary
+      />
     </Box>
   );
 };

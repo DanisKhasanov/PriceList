@@ -17,7 +17,6 @@ export const validateTable = (
   tableData: Product[],
   showSnackbar: SnackbarProps
 ): boolean => {
-  console.log("1", tableData, "2", showSnackbar);
   if (tableData.length === 0) {
     showSnackbar("Сначала заполните таблицу", {
       variant: "error",

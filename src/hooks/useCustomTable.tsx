@@ -13,7 +13,7 @@ export const useCustomTable = ({
   loading,
   setTableData,
   remainder,
-  priceToUSD
+  priceToUSD,
 }: UseCustomTableProps) => {
   const columns = TableColumns({ setTableData, remainder, priceToUSD });
 
@@ -50,7 +50,6 @@ export const useCustomTable = ({
     ],
     paginationDisplayMode: "pages",
     muiPaginationProps: {
-      
       color: "primary",
       showRowsPerPage: false,
       variant: "outlined",

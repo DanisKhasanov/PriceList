@@ -1,3 +1,5 @@
+import {  OptionsObject, SnackbarMessage } from "notistack";
+
 export interface SnackbarProps {
-  (message: string, options: { variant: string }): void;
+  (message: SnackbarMessage, options?: OptionsObject): void;
 }
