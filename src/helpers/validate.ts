@@ -1,7 +1,7 @@
 import { Product } from "@/props/product";
 import { SnackbarProps } from "@/props/snackbarProps";
 
-export const Validates = (
+export const validatesSideBar = (
   pathName: string[],
   name: string[],
   extract_code: string[],
