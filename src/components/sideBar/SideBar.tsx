@@ -69,7 +69,6 @@ const SideBar = ({ setTableData, setLoading }: SideBarProps) => {
     stock_zero_flag,
     oil_discriptions,
   ]);
-  
   return (
     <Box>
       <Box

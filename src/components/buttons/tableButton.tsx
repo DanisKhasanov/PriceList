@@ -15,13 +15,13 @@ import {
 } from "material-react-table";
 import { TableButtonProps } from "@/props/table/tableButtonProps";
 import useCustomSnackbar from "@/hooks/useCustomSnackbar";
-import { images } from "./test";
-// import { Logo } from "../../../public/logo";
 import { Product } from "@/props/product";
 import { useState } from "react";
 import { validateTable } from "@/helpers/validate";
 import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts";
+import { images } from "./test";
+import { PDF } from "../table/PDF";
 
 const styleButton = {
   color: "black",
@@ -53,53 +53,8 @@ export const TableButtonDowload = ({
 
     try {
       setDownloading(true);
-      const tableBody = allTableData.map((item: any) => [
-        {
-          image: images,
-          fit: [150, 150],
-        },
-        {
-          text: [
-            { text: `Артикул: `, bold: true },
-            `${item.code}\n`,
-            // { text: `Описание: `, bold: true },
-            // `${item.description || "N/A"}\n`,
-            { text: `Цена: `, bold: true },
-            priceShowFlag
-              ? `${item.vip || "N/A"} USD.\n`
-              : `${item.vip || "N/A"} руб.\n`,
-            { text: `В коробке: `, bold: true },
-            `${item.quantity || "N/A"}\n`,
-          ],
-        },
-      ]);
 
-      const docDefinition = {
-        watermark: { text: "FLX", color: "red", opacity: 0.1, italics: false },
-        content: [
-          // {
-          //   image: Logo,
-          //   width: 200
-          // },
-          {
-            table: {
-              widths: [150, "*"],
-              body: tableBody,
-              dontBreakRows: true,
-            },
-            layout: {
-              hLineWidth: () => 0,
-              vLineWidth: () => 0,
-              paddingLeft: () => 5,
-              paddingRight: () => 5,
-              paddingTop: () => 5,
-              paddingBottom: () => 5,
-            },
-          },
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).open();
+      pdfMake.createPdf(PDF(allTableData, images, priceShowFlag)).open();
     } catch (error) {
       showSnackbar("Ошибка при запросе на создания PDF файла", {
         variant: "error",
@@ -109,6 +64,7 @@ export const TableButtonDowload = ({
       setDownloading(false);
     }
   };
+
   return (
     <>
       <Button sx={styleButton} onClick={() => download(table)}>
