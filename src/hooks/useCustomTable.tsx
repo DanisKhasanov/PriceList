@@ -63,21 +63,16 @@ export const useCustomTable = ({
     muiSearchTextFieldProps: {
       placeholder: "Поиск",
       sx: {
-        minWidth: "200px",
         "& .MuiInput-underline:before": { borderBottom: "none" },
         "& .MuiInput-underline:after": { borderBottom: "none" },
         "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
           borderBottom: "none",
         },
         "& .MuiInputBase-input::placeholder": {
-          fontSize: "21px",
-          fontWeight: "300",
-          color: "rgba(0, 0, 0, 0.8)",
+          fontSize: "0.8vw",
         },
         "& .MuiSvgIcon-root": {
-          fontSize: "25px",
-          marginTop: "-5px",
-          padding: "5px",
+          fontSize: "1vw",
           color: "rgba(0, 0, 0, 0.5)",
         },
       },
@@ -85,7 +80,12 @@ export const useCustomTable = ({
     },
     muiTableHeadCellProps: {
       sx: {
-        fontSize: "16px",
+        fontSize: "0.8vw",
+      },
+    },
+    muiTableBodyCellProps: {
+      sx: {
+        fontSize: "0.7vw",
       },
     },
     muiTablePaperProps: {

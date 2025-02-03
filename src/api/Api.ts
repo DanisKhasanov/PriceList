@@ -49,7 +49,7 @@ export const GetPathName = async () => {
     const response = await api.get("get_filter?filter_name=pathName");
     return response.data;
   } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
+    console.error("Ошибка при получении каталога:", error);
     throw error;
   }
 };
@@ -106,14 +106,10 @@ export const GetDataForTable = async (
 
 export const SortTableByPopularity = async () => {
   try {
-    const response = await api.get("get_filter?filter_name=counterpartyABC", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.get("get_filter?filter_name=counterpartyABC");
     return response.data;
   } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
+    console.error("Ошибка при сортировке данных:", error);
     throw error;
   }
 };
@@ -126,6 +122,16 @@ export const GetPricesToUSD = async () => {
     return response.data.conversion_rates.RUB;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
+
+export const GetImages = async (palyloadBody) => {
+  try {
+    const response = await api.post("/get_images/", palyloadBody);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при получении изображений:", error);
     throw error;
   }
 };

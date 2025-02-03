@@ -27,7 +27,7 @@ export const CustomSwitch = () => {
   ];
 
   return (
-    <FormGroup sx={{ marginTop: 1 }}>
+    <FormGroup sx={{ marginTop: 0.5 }}>
       {filterOptions.map((option, index) => (
         <FormControlLabel
           key={index}
@@ -38,9 +38,11 @@ export const CustomSwitch = () => {
           labelPlacement="start"
           sx={{
             marginLeft: 0.5,
-            marginBottom: 1,
             justifyContent: "space-between",
             width: "97%",
+            "& .MuiFormControlLabel-label": {
+              fontSize: "0.8vw",
+            },
           }}
         />
       ))}

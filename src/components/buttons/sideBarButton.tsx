@@ -8,8 +8,8 @@ const SideBarButton = ({ onClick, label, isPrimary }: SideBarButtonProps) => {
       sx={{
         width: "100%",
         textTransform: "none",
-        fontSize: "1.2rem",
-        borderRadius: 5,
+        fontSize: "1vw",
+        borderRadius: 3,
       }}
       size="large"
       onClick={onClick}

@@ -1,29 +1,44 @@
 import { Box } from "@mui/material";
-import { MaterialReactTable, MRT_TablePagination } from "material-react-table";
+import {
+  MaterialReactTable,
+  MRT_TablePagination,
+  type MRT_TableInstance,
+} from "material-react-table";
 
-export const TableBody = ({ table }) => {
+interface TableBodyProps<TData extends Record<string, any>> {
+  table: MRT_TableInstance<TData>;
+}
+
+export const TableBody = <TData extends Record<string, any>>({
+  table,
+}: TableBodyProps<TData>) => {
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: "#ffffff",
+        borderRadius: 7,
+        padding: "15px",
+      }}
+    >
       <Box
         sx={{
-          backgroundColor: "#ffffff",
-          borderRadius: 7,
-          padding: "15px",
+          height: "73vh",
+          overflow: "auto",
+          "&::-webkit-scrollbar": {
+            width: "5px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "lightgrey",
+            borderRadius: "4px",
+          },
         }}
       >
-        <Box
-          sx={{
-            height: "73vh",
-            overflow: "auto",
-          }}
-        >
-          <MaterialReactTable table={table} />
-        </Box>
-
-        <Box sx={{ mt: 2 }}>
-          <MRT_TablePagination table={table} />
-        </Box>
+        <MaterialReactTable table={table} />
       </Box>
-    </>
+
+      <Box sx={{ m: 0.5, display: "flex", justifyContent: "center" }}>
+        <MRT_TablePagination table={table} />
+      </Box>
+    </Box>
   );
 };

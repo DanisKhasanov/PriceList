@@ -1,5 +1,4 @@
 import { MRT_ColumnDef } from "material-react-table";
-import { IconButton } from "@mui/material";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { useMemo } from "react";
 import { Product } from "@/props/product";
@@ -77,9 +76,11 @@ export const TableColumns = ({
         header: "",
         id: "actions",
         Cell: ({ row }) => (
-          <IconButton onClick={() => deleteRow(row.index)}>
-            <CancelRoundedIcon sx={{ color: "#f40104" }} />
-          </IconButton>
+          <CancelRoundedIcon
+         
+          sx={{ color: "#f40104", cursor: "pointer", fontSize: "20px" }}
+          onClick={() => deleteRow(row.index)}
+        />
         ),
         size: 10,
       },
