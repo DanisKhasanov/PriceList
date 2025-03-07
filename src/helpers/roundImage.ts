@@ -11,37 +11,32 @@ export const RoundImageWithCanvas = ({
       resolve(null); // Если изображение отсутствует, сразу возвращаем null
       return;
     }
-
     const img = new Image();
     img.src = idImage;
-
     img.onload = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
+      // Используйте размеры исходного изображения
+      canvas.width = img.width;
+      canvas.height = img.height;
       const ctx = canvas.getContext("2d");
-
       if (!ctx) {
         reject(new Error("Failed to get 2D context"));
         return;
       }
-
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
       ctx.moveTo(radius, 0);
-      ctx.arcTo(width, 0, width, height, radius);
-      ctx.arcTo(width, height, 0, height, radius);
-      ctx.arcTo(0, height, 0, 0, radius);
-      ctx.arcTo(0, 0, width, 0, radius);
-      ctx.closePath();
+      ctx.arcTo(canvas.width, 0, canvas.width, canvas.height, radius);
+      ctx.arcTo(canvas.width, canvas.height, 0, canvas.height, radius);
+      ctx.arcTo(0, canvas.height, 0, 0, radius);
+      ctx.arcTo(0, 0, canvas.width, 0, radius);
       ctx.clip();
-
-      ctx.drawImage(img, 0, 0, width, height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      // Сохраните изображение в формате PNG для лучшего качества
       resolve(canvas.toDataURL("image/png"));
     };
-
     img.onerror = () => {
-      reject(new Error("Failed to load image")); // Обработка ошибок загрузки изображения
+      reject(new Error("Failed to load image"));
     };
   });
 };

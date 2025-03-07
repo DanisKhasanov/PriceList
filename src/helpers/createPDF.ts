@@ -16,11 +16,12 @@ export const CreatePDF = async ({
         ? `data:image/jpeg;base64,${idImage}`
         : NotImage;
 
+      // return imageToProcess;
       return RoundImageWithCanvas({
         idImage: imageToProcess,
         width: 85,
         height: 85,
-        radius: 10,
+        radius: 100,
       });
     })
   );
