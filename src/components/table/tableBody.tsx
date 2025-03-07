@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import {
   MaterialReactTable,
   MRT_TablePagination,
@@ -7,9 +7,11 @@ import {
 
 interface TableBodyProps<TData extends Record<string, any>> {
   table: MRT_TableInstance<TData>;
+  totalOrders: number;
 }
 
 export const TableBody = <TData extends Record<string, any>>({
+  totalOrders,
   table,
 }: TableBodyProps<TData>) => {
   return (
@@ -17,12 +19,12 @@ export const TableBody = <TData extends Record<string, any>>({
       sx={{
         backgroundColor: "#ffffff",
         borderRadius: 7,
-        padding: "15px",
+        padding: "12px",
       }}
     >
       <Box
         sx={{
-          height: "73vh",
+          height: "74vh",
           overflow: "auto",
           "&::-webkit-scrollbar": {
             width: "5px",
@@ -36,9 +38,26 @@ export const TableBody = <TData extends Record<string, any>>({
         <MaterialReactTable table={table} />
       </Box>
 
-      <Box sx={{ m: 0.5, display: "flex", justifyContent: "center" }}>
-        <MRT_TablePagination table={table} />
-      </Box>
+      <Grid
+        container
+        sx={{
+          alignItems: "center",
+        }}
+      >
+        <Grid item xs={12} md={3.5}>
+          <Typography sx={{ fontSize: "12px", ml: 1 , fontWeight: "bold", color: "text.secondary"}}>
+            Всего товаров: {totalOrders}
+          </Typography>
+        </Grid>
+
+        <Grid
+          item
+          xs={10}
+          md={4}
+        >
+          <MRT_TablePagination table={table} />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 
 const Loading = ({ downloading }: { downloading: boolean }) => {
   return (
@@ -17,7 +17,11 @@ const Loading = ({ downloading }: { downloading: boolean }) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress color="secondary" />
+        <img
+          src="/uia.gif"
+          alt="Loading..."
+          style={{ width: "250px", height: "250px" }}
+        />
       </Box>
     )
   );

@@ -77,10 +77,9 @@ export const TableColumns = ({
         id: "actions",
         Cell: ({ row }) => (
           <CancelRoundedIcon
-         
-          sx={{ color: "#f40104", cursor: "pointer", fontSize: "20px" }}
-          onClick={() => deleteRow(row.index)}
-        />
+            sx={{ color: "#f40104", cursor: "pointer", fontSize: "20px" }}
+            onClick={() => deleteRow(row.index)}
+          />
         ),
         size: 10,
       },

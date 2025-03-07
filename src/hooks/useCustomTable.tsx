@@ -15,8 +15,11 @@ export const useCustomTable = ({
   remainder,
   priceToUSD,
 }: UseCustomTableProps) => {
-  const columns = TableColumns({ setTableData, remainder, priceToUSD });
-
+  const columns = TableColumns({
+    setTableData,
+    remainder,
+    priceToUSD,
+  });
   const fixRow = (rowIndex: number) => {
     setTableData((prevData: Product[]) => {
       const newData = [...prevData];
@@ -57,8 +60,9 @@ export const useCustomTable = ({
 
     initialState: {
       columnOrder: columns.map((col) => col.accessorKey as string),
-      pagination: { pageSize: 8, pageIndex: 0 },
+      pagination: { pageSize: 13, pageIndex: 0 },
       showGlobalFilter: true,
+      density: "compact",
     },
     muiSearchTextFieldProps: {
       placeholder: "Поиск",
@@ -69,7 +73,7 @@ export const useCustomTable = ({
           borderBottom: "none",
         },
         "& .MuiInputBase-input::placeholder": {
-          fontSize: "0.8vw",
+          fontSize: "13px",
         },
         "& .MuiSvgIcon-root": {
           fontSize: "1vw",
@@ -80,12 +84,19 @@ export const useCustomTable = ({
     },
     muiTableHeadCellProps: {
       sx: {
-        fontSize: "0.8vw",
+        fontSize: "14px",
       },
     },
     muiTableBodyCellProps: {
       sx: {
-        fontSize: "0.7vw",
+        fontSize: "13px",
+      },
+    },
+    muiTableBodyProps: {
+      sx: {
+        "& .MuiTypography-root": {
+          fontSize: "14px",
+        },
       },
     },
     muiTablePaperProps: {
@@ -104,3 +115,4 @@ export const useCustomTable = ({
 
   return table;
 };
+

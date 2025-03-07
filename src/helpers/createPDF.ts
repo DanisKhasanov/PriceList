@@ -1,6 +1,7 @@
 import { RoundImageWithCanvas } from "@/helpers/roundImage";
 import { CreatePDFProps } from "@/props/createPDFProps";
 import { Product } from "@/props/product";
+import { NotImage } from "./noImage";
 
 export const CreatePDF = async ({
   allTableData,
@@ -8,43 +9,64 @@ export const CreatePDF = async ({
   priceShowFlag,
 }: CreatePDFProps) => {
   const roundedImages = await Promise.all(
-    allTableData.map((item) => {
+    allTableData.map((item: any) => {
       const idImage = images[item.id];
-console.log(idImage)
-      // if (!idImage) return null; // если нет изображения, не обрабатываем
+
+      const imageToProcess = idImage
+        ? `data:image/jpeg;base64,${idImage}`
+        : NotImage;
 
       return RoundImageWithCanvas({
-        idImage: `data:image/jpeg;base64,${idImage}`, // Добавляем префикс base64
+        idImage: imageToProcess,
         width: 85,
         height: 85,
         radius: 10,
       });
     })
   );
-
   const tableBody = allTableData.map((item: Product, index: number) => {
+    const getColors = (item: any) => {
+      if (!item.variants || item.variants.length === 0) return "";
+
+      const colors = item.variants
+        .flatMap((variant) => {
+          if (!variant.attributes || variant.attributes.length < 2) return [];
+          return variant.attributes[1]; // Значения цветов во втором элементе массива
+        })
+        .filter((color) => typeof color === "string");
+
+      return [...new Set(colors)].join(", "); // Убираем дубликаты и объединяем в строку
+    };
+
+    const colorString = getColors(item);
+    const imageObject = {
+      image: roundedImages[index],
+      width: 85,
+      height: 85,
+      radius: 10,
+    };
+
     return [
-      {
-        image: roundedImages[index] || "",
-        width: 85,
-        height: 85,
-        radius: 10,
-      },
+      imageObject,
       {
         stack: [
           {
-            text: `${item.code} (${item.volume || "N/A"})`,
+            text: `${item.code}`, // TODO:  тут вывести объем
             bold: true,
             fontSize: 12,
           },
           {
-            text: `Material: ${item.material || "N/A"}`,
+            text: priceShowFlag
+              ? `Material: ${item.material || ""}`
+              : `Материал: ${item.material || ""}`,
             fontSize: 9,
             color: "gray",
             margin: [0, 5, 0, 0],
           },
           {
-            text: `COLOR: ${item.color || "N/A"}`,
+            text: priceShowFlag
+              ? `COLOR: ${colorString}`
+              : `ЦВЕТ: ${colorString}`,
             fontSize: 9,
             bold: true,
             color: "#ffffff",
@@ -59,7 +81,7 @@ console.log(idImage)
                 bold: true,
               },
               {
-                text: "(price per unit)",
+                text: priceShowFlag ? "(price per unit)" : "(цена за единицу)",
                 fontSize: 10,
                 color: "gray",
               },

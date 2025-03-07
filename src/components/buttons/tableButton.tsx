@@ -19,7 +19,6 @@ import { Product } from "@/props/product";
 import { validateTable } from "@/helpers/validate";
 import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts";
-import { images } from "./test";
 import { CreatePDF } from "@/helpers/createPDF";
 import { StyleButton } from "@/helpers/styleButtonTable";
 import { LocalDate } from "@/helpers/localDate";
@@ -48,7 +47,7 @@ export const TableButtonFilters = ({ table }: TableButtonProps) => {
       <MRT_ToggleFiltersButton
         table={table}
         sx={{
-          "& .MuiSvgIcon-root": { fontSize: "25px", color: "#056bf1" },
+          "& .MuiSvgIcon-root": { fontSize: "20px", color: "#056bf1" },
         }}
       />
     </Box>
@@ -67,7 +66,7 @@ export const TableButtonRemainder = () => {
     <Button sx={StyleButton} onClick={handleStockShowFlag}>
       <Checkbox
         checked={stockShowFlag}
-        sx={{ "& .MuiSvgIcon-root": { fontSize: 27, color: "#056bf1;" } }}
+        sx={{ "& .MuiSvgIcon-root": { fontSize: 22, color: "#056bf1;" } }}
       />
       Остаток
     </Button>
@@ -137,7 +136,7 @@ export const TableButtonPricesToUSD = ({
     <Button sx={StyleButton} onClick={toggleCurrency}>
       <Checkbox
         checked={priceShowFlag}
-        sx={{ "& .MuiSvgIcon-root": { fontSize: 27, color: "#056bf1;" } }}
+        sx={{ "& .MuiSvgIcon-root": { fontSize: 22, color: "#056bf1;" } }}
       />
       {priceShowFlag ? "Цены в RUB" : "Цены в USD"}
     </Button>
@@ -190,7 +189,7 @@ export const TableButtonSort = ({
   return (
     <Button sx={StyleButton} onClick={() => sortTableByPopularity(table)}>
       <UnfoldLess
-        style={{ marginRight: 3, fontSize: "25px", color: "#296BF1" }}
+        style={{ marginRight: 3, fontSize: "22px", color: "#296BF1" }}
       />
       Сортировать по популярности
     </Button>
@@ -230,9 +229,9 @@ export const TableButtonDowload = ({
       }); 
 
       pdfMake.createPdf(generatePDF)
-      // .open()
+      .open()
       
-      .download(`Prict List ${LocalDate()}.pdf`);
+      // .download(`Prict List ${LocalDate()}.pdf`);
     } catch (error) {
       showSnackbar("Ошибка при запросе на создания PDF файла", {
         variant: "error",
@@ -248,7 +247,7 @@ export const TableButtonDowload = ({
       <Button sx={StyleButton} onClick={() => download(table)}>
         <UploadFile
           sx={{ color: "green" }}
-          style={{ marginRight: 3, fontSize: "25px" }}
+          style={{ marginRight: 3, fontSize: "22px" }}
         />
         Выгрузить в PDF
       </Button>
@@ -270,7 +269,7 @@ export const TableButtonClear = ({
     <Button sx={StyleButton} onClick={clearTable}>
       <Clear
         sx={{ color: "red" }}
-        style={{ marginRight: 3, fontSize: "25px" }}
+        style={{ marginRight: 3, fontSize: "22px" }}
       />
       Очистить таблицу
     </Button>

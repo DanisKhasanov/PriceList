@@ -23,7 +23,7 @@ const TableHeader = ({
         justifyContent: "space-between",
         borderRadius: "30px",
         marginBottom: "15px",
-        padding: "15px",
+        padding: "12px",
         backgroundColor: "#ffffff",
       }}
     >

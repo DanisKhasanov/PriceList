@@ -75,13 +75,11 @@ const SideBar = ({ setTableData, setLoading }: SideBarProps) => {
         overflow="auto"
         sx={{
           height: "84vh",
-          mb: 2,
           "&::-webkit-scrollbar": {
-            width: "5px",
+            width: "4px",
           },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "lightgrey",
-            borderRadius: "4px",
           },
         }}
       >
@@ -89,7 +87,7 @@ const SideBar = ({ setTableData, setLoading }: SideBarProps) => {
 
         <Filters />
 
-        <AdditionalFields />
+        {/* <AdditionalFields /> */}
       </Box>
 
       <SideBarButton

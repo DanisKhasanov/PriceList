@@ -16,6 +16,9 @@ const Table = ({ data, setTableData, loading }: TableProps) => {
   const priceToUSD = useSelector(
     (state: RootState) => state.data.price_show_flag
   );
+
+  const totalOrders = data.length;
+
   const table = useCustomTable({
     data,
     loading,
@@ -37,7 +40,7 @@ const Table = ({ data, setTableData, loading }: TableProps) => {
         setTableData={setTableData}
       />
 
-      <TableBody table={table} />
+      <TableBody totalOrders= {totalOrders} table={table} />
 
       <Loading downloading={downloading} />
     </Box>
