@@ -60,7 +60,7 @@ export const useCustomTable = ({
 
     initialState: {
       columnOrder: columns.map((col) => col.accessorKey as string),
-      pagination: { pageSize: 13, pageIndex: 0 },
+      pagination: { pageSize: 14, pageIndex: 0 },
       showGlobalFilter: true,
       density: "compact",
     },

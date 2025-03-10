@@ -230,9 +230,9 @@ export const TableButtonDowload = ({
 
       pdfMake
         .createPdf(generatePDF)
-        .open()
+        // .open()
 
-        // .download(`Prict List ${LocalDate()}.pdf`);
+        .download(`Prict List ${LocalDate()}.pdf`);
     } catch (error) {
       showSnackbar("Ошибка при запросе на создания PDF файла", {
         variant: "error",
