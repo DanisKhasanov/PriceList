@@ -1,35 +1,26 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addName,
   addExtractCode,
   addFuzzyCode,
+  toggleVisibleField,
+  resetFields,
 } from "@/store/reducers/DataReducer";
 import { CustomField } from "./customField";
-import SideBarButton from "@/components/buttons/sideBarButton";
+import { SideBarButton } from "@/components/buttons/sideBarButton";
+import { RootState } from "@/store/store";
 
 export const InputFields = () => {
   const dispatch = useDispatch();
-  const [visibleFields, setVisibleFields] = useState({
-    extractCode: false,
-    fuzzyCode: false,
-    name: false,
-  });
-  const [fieldValues, setFieldValues] = useState({
-    extractCode: "",
-    fuzzyCode: "",
-    name: "",
-  });
-
-  const toggleFieldVisibility = (field: keyof typeof visibleFields) => {
-    setVisibleFields((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
+  const extractCode = useSelector((state: RootState) => state.data.extract_code[0] || "");
+  const fuzzyCode = useSelector((state: RootState) => state.data.fuzzy_code[0] || "");
+  const name = useSelector((state: RootState) => state.data.name[0] || "");
+  const visibleFields = useSelector((state: RootState) => state.data.visibleFields);
 
   const handleFieldChange = (
-    field: keyof typeof fieldValues,
+    field: keyof typeof visibleFields,
     value: string
   ) => {
-    setFieldValues((prev) => ({ ...prev, [field]: value }));
     switch (field) {
       case "extractCode":
         dispatch(addExtractCode(value));
@@ -44,14 +35,7 @@ export const InputFields = () => {
   };
 
   const handleReset = () => {
-    setFieldValues({
-      extractCode: "",
-      fuzzyCode: "",
-      name: "",
-    });
-    dispatch(addExtractCode(""));
-    dispatch(addFuzzyCode(""));
-    dispatch(addName(""));
+    dispatch(resetFields());
   };
 
   return (
@@ -60,8 +44,8 @@ export const InputFields = () => {
         label="Код товара"
         placeholder="Введите код товара через Enter"
         isVisible={visibleFields.extractCode}
-        setVisible={() => toggleFieldVisibility("extractCode")}
-        value={fieldValues.extractCode}
+        setVisible={() => dispatch(toggleVisibleField("extractCode"))}
+        value={extractCode}
         onChange={(value) => handleFieldChange("extractCode", value)}
         isTextArea
       />
@@ -69,16 +53,16 @@ export const InputFields = () => {
         label="Код товара (нечёткий)"
         placeholder="Введите нечёткий код"
         isVisible={visibleFields.fuzzyCode}
-        setVisible={() => toggleFieldVisibility("fuzzyCode")}
-        value={fieldValues.fuzzyCode}
+        setVisible={() => dispatch(toggleVisibleField("fuzzyCode"))}
+        value={fuzzyCode}
         onChange={(value) => handleFieldChange("fuzzyCode", value)}
       />
       <CustomField
         label="Наименование товара"
         placeholder="Введите наименование"
         isVisible={visibleFields.name}
-        setVisible={() => toggleFieldVisibility("name")}
-        value={fieldValues.name}
+        setVisible={() => dispatch(toggleVisibleField("name"))}
+        value={name}
         onChange={(value) => handleFieldChange("name", value)}
       />
       <SideBarButton onClick={handleReset} label="Снять выбор" />

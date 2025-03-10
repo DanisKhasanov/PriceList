@@ -18,6 +18,8 @@ export interface Product {
   cp: string;
   to_order: string | null;
   oil_discriptions: string | null;
+  material: string;
+  volume: string;
   variants: Variant[];
 }
 

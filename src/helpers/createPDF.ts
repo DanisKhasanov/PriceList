@@ -21,7 +21,7 @@ export const CreatePDF = async ({
         idImage: imageToProcess,
         width: 85,
         height: 85,
-        radius: 100,
+        radius: 50,
       });
     })
   );
@@ -30,16 +30,16 @@ export const CreatePDF = async ({
       if (!item.variants || item.variants.length === 0) return "";
 
       const colors = item.variants
-        .flatMap((variant) => {
+        .flatMap((variant:any) => {
           if (!variant.attributes || variant.attributes.length < 2) return [];
           return variant.attributes[1]; // Значения цветов во втором элементе массива
         })
-        .filter((color) => typeof color === "string");
+        .filter((color:any) => typeof color === "string");
 
       return [...new Set(colors)].join(", "); // Убираем дубликаты и объединяем в строку
     };
 
-    const colorString = getColors(item);
+    const colors = getColors(item);
     const imageObject = {
       image: roundedImages[index],
       width: 85,
@@ -60,15 +60,15 @@ export const CreatePDF = async ({
             text: priceShowFlag
               ? `Material: ${item.material || ""}`
               : `Материал: ${item.material || ""}`,
-            fontSize: 9,
+            fontSize: 8,
             color: "gray",
             margin: [0, 5, 0, 0],
           },
           {
             text: priceShowFlag
-              ? `COLOR: ${colorString}`
-              : `ЦВЕТ: ${colorString}`,
-            fontSize: 9,
+              ? `Color: ${colors || ""}`
+              : `Цвет: ${colors || ""}`,
+            fontSize: 8,
             bold: true,
             color: "#ffffff",
             margin: [0, 5, 0, 0],
@@ -94,15 +94,8 @@ export const CreatePDF = async ({
       {
         text: [
           {
-            text: "100",
-            fontSize: 40,
-            bold: true,
-            color: "#1C1C1C",
-            alignment: "right",
-          },
-          {
-            text: "ml",
-            fontSize: 40,
+            text: `${item.volume || ""}`,
+            fontSize: 30,
             bold: true,
             color: "#1C1C1C",
             alignment: "right",
@@ -145,16 +138,17 @@ export const CreatePDF = async ({
     content: [
       {
         table: {
-          widths: [75, "*", 120],
+          widths: [75, "*", 100],
           body: tableBody,
+          dontBreakRows: true,
         },
         layout: {
           hLineWidth: () => 0,
           vLineWidth: () => 0,
-          paddingLeft: () => 10,
-          paddingRight: () => 10,
-          paddingTop: () => 10,
-          paddingBottom: () => 10,
+          paddingLeft: () => 8,
+          paddingRight: () => 8,
+          paddingTop: () => 8,
+          paddingBottom: () => 8,
         },
       },
     ],

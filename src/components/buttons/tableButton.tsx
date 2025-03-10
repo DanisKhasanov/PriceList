@@ -226,12 +226,13 @@ export const TableButtonDowload = ({
         allTableData,
         images: getImages,
         priceShowFlag,
-      }); 
+      });
 
-      pdfMake.createPdf(generatePDF)
-      .open()
-      
-      // .download(`Prict List ${LocalDate()}.pdf`);
+      pdfMake
+        .createPdf(generatePDF)
+        .open()
+
+        // .download(`Prict List ${LocalDate()}.pdf`);
     } catch (error) {
       showSnackbar("Ошибка при запросе на создания PDF файла", {
         variant: "error",
@@ -266,7 +267,7 @@ export const TableButtonClear = ({
   };
 
   return (
-    <Button sx={StyleButton} onClick={clearTable}>
+    <Button onClick={clearTable} sx={StyleButton}>
       <Clear
         sx={{ color: "red" }}
         style={{ marginRight: 3, fontSize: "22px" }}

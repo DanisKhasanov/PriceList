@@ -20,12 +20,12 @@ export const TableColumns = ({
       {
         header: "Имя",
         accessorKey: "name",
-        size: 150,
+        size: 70,
       },
       {
         header: "Код",
         accessorKey: "code",
-        size: 70,
+        size: 50,
       },
       {
         header: "Артикул",

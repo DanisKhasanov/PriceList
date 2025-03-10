@@ -84,12 +84,12 @@ export const useCustomTable = ({
     },
     muiTableHeadCellProps: {
       sx: {
-        fontSize: "14px",
+        fontSize: "13px",
       },
     },
     muiTableBodyCellProps: {
       sx: {
-        fontSize: "13px",
+        fontSize: "12px",
       },
     },
     muiTableBodyProps: {

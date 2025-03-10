@@ -2,8 +2,6 @@ import { RoundImageProps } from "@/props/table/roundImageProps";
 
 export const RoundImageWithCanvas = ({
   idImage,
-  width,
-  height,
   radius,
 }: RoundImageProps) => {
   return new Promise((resolve, reject) => {
@@ -32,7 +30,6 @@ export const RoundImageWithCanvas = ({
       ctx.arcTo(0, 0, canvas.width, 0, radius);
       ctx.clip();
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      // Сохраните изображение в формате PNG для лучшего качества
       resolve(canvas.toDataURL("image/png"));
     };
     img.onerror = () => {

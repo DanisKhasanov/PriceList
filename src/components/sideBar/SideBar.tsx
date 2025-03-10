@@ -3,7 +3,10 @@ import { Catalog } from "@components/sideBar/catalog/catalog";
 import { Filters } from "./filters/filters";
 import { AdditionalFields } from "./additionalFields/additionalFields";
 import useCustomSnackbar from "@/hooks/useCustomSnackbar";
-import SideBarButton from "@components/buttons/sideBarButton";
+import {
+  SideBarButtonClear,
+  SideBarButton,
+} from "@components/buttons/sideBarButton";
 import { validatesSideBar } from "@/helpers/validate";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
@@ -74,7 +77,7 @@ const SideBar = ({ setTableData, setLoading }: SideBarProps) => {
       <Box
         overflow="auto"
         sx={{
-          height: "84vh",
+          height: "78vh",
           "&::-webkit-scrollbar": {
             width: "4px",
           },
@@ -95,6 +98,8 @@ const SideBar = ({ setTableData, setLoading }: SideBarProps) => {
         label="Сформировать таблицу"
         isPrimary
       />
+
+      <SideBarButtonClear setTableData={setTableData} />
     </Box>
   );
 };

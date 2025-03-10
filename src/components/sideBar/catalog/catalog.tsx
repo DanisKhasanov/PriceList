@@ -1,24 +1,30 @@
 import Menu from "rc-menu";
-import { useDispatch } from "react-redux";
-import { useState, ReactNode, useEffect } from "react";
-import { setPathName, removePathName } from "@/store/reducers/DataReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { ReactNode, useEffect, useState } from "react";
+import {
+  setPathName,
+  removePathName,
+  deselectAllPathName,
+} from "@/store/reducers/DataReducer";
 import CustomTooltip from "@/helpers/tooltip";
 import { GetPathName } from "@/api/Api";
 import menuTree from "./menuTree";
 import { CustomSkeleton } from "@/helpers/skeleton";
 import useCustomSnackbar from "@/hooks/useCustomSnackbar";
-import SideBarButton from "@/components/buttons/sideBarButton";
+import { SideBarButton } from "@/components/buttons/sideBarButton";
+import { RootState } from "@/store/store";
 
 export const Catalog = () => {
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [menuData, setMenuData] = useState<ReactNode[]>([]);
   const dispatch = useDispatch();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { showSnackbar } = useCustomSnackbar();
+  const { pathName } = useSelector((state: RootState) => state.data);
+  const [menuData, setMenuData] = useState<ReactNode[]>([]);
+
 
   useEffect(() => {
-    const pathName = async () => {
+    const pathNames = async () => {
       try {
         const response = await GetPathName();
         setMenuData(menuTree(response));
@@ -30,26 +36,33 @@ export const Catalog = () => {
       }
     };
 
-    pathName();
+    pathNames();
   }, []);
 
-  const onSelect = (info: { selectedKeys: string[]; key: string }) => {
-    setSelectedKeys(info.selectedKeys);
-    dispatch(setPathName("Каталог/" + info.key));
+  const onSelect = (info: any) => {
+    const newKey = `Каталог/${info.key}`;
+    if (!pathName.includes(newKey)) {
+      dispatch(setPathName(newKey));
+    }
   };
 
-  const onDeselect = (info: { selectedKeys: string[]; key: string }) => {
-    const updatedKeys = info.selectedKeys.map((key) =>
-      key.replace("Каталог/", "")
-    );
-    dispatch(removePathName(updatedKeys));
-    setSelectedKeys(info.selectedKeys);
+  const onDeselect = (info: any) => {
+    const keyToRemove = `Каталог/${info.key}`;
+    dispatch(removePathName([keyToRemove]));
   };
 
   const deselectAll = () => {
-    setSelectedKeys([]);
-    dispatch(removePathName([]));
+    dispatch(deselectAllPathName([]));
   };
+
+  const normalizedPathName = pathName
+    .map((key) => {
+      if (typeof key === "string") {
+        return key.split("/").slice(1).join("/");
+      }
+      return "";
+    })
+    .filter((key) => key !== "");
 
   return (
     <div>
@@ -68,15 +81,15 @@ export const Catalog = () => {
             onDeselect={onDeselect}
             onOpenChange={(openKeys: string[]) => setOpenKeys(openKeys)}
             openKeys={openKeys}
-            selectedKeys={selectedKeys}
-            mode={window.innerWidth < 768 ? "inline" : "vertical"}
+            selectedKeys={normalizedPathName}
+            mode={"vertical"}
           >
             {menuData}
           </Menu>
         )}
       </div>
 
-      <SideBarButton onClick={deselectAll} label="Снять выбор"/>
+      <SideBarButton onClick={deselectAll} label="Снять выбор" />
     </div>
   );
 };
