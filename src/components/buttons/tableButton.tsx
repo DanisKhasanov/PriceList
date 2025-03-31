@@ -19,7 +19,7 @@ import { Product } from "@/props/product";
 import { validateTable } from "@/helpers/validate";
 import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts";
-import { CreatePDF } from "@/helpers/createPDF";
+import { CreatePDF } from "@/components/pdf/createPDF";
 import { StyleButton } from "@/helpers/styleButtonTable";
 import { LocalDate } from "@/helpers/localDate";
 
@@ -138,7 +138,7 @@ export const TableButtonPricesToUSD = ({
         checked={priceShowFlag}
         sx={{ "& .MuiSvgIcon-root": { fontSize: 22, color: "#056bf1;" } }}
       />
-      {priceShowFlag ? "Цены в RUB" : "Цены в USD"}
+      {"Цены в USD"}
     </Button>
   );
 };
@@ -205,6 +205,7 @@ export const TableButtonDowload = ({
     (state: RootState) => state.data.price_show_flag
   );
   if (!table) return;
+
   const download = async (table: MRT_TableInstance<Product>) => {
     const allTableData = table
       .getPrePaginationRowModel()
@@ -230,9 +231,9 @@ export const TableButtonDowload = ({
 
       pdfMake
         .createPdf(generatePDF)
-        // .open()
+        .open()
 
-        .download(`Prict List ${LocalDate()}.pdf`);
+        // .download(`Prict List ${LocalDate()}.pdf`);
     } catch (error) {
       showSnackbar("Ошибка при запросе на создания PDF файла", {
         variant: "error",

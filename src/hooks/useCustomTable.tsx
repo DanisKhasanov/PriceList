@@ -51,6 +51,7 @@ export const useCustomTable = ({
         table={table}
       />,
     ],
+    
     paginationDisplayMode: "pages",
     muiPaginationProps: {
       color: "primary",
